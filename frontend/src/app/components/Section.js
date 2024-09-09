@@ -15,8 +15,8 @@ const Section = () => {
             <Image
               src={Glacier}
               alt="Glacier image"
-              layout='fill'
-              objectFit='cover'
+              fill  // This ensures the image fills the parent container
+              style={{ objectFit: 'cover' }}
               className='w-full h-full'
             />
             {/* Overlay */}
@@ -44,8 +44,8 @@ const Section = () => {
             <Image
               src={mobile}
               alt="Mobile image"
-              layout='fill'
-              objectFit='cover'
+              fill  // This ensures the image fills the parent container
+              style={{ objectFit: 'cover' }}
               className='w-full h-full'
             />
             {/* Overlay */}

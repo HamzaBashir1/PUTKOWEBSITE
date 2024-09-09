@@ -51,7 +51,7 @@ const Hero = ({ locationLabel, checkInLabel, checkOutLabel, guestLabel, searchMo
           <div className="flex items-center space-x-4">
             {token && user ? (
               <Link
-                href={`/${role === "guest" ? "/Host" : "/Host"}`}
+                href={`/${role === "guest" ? "Profile" : "Profile"}`}
                 className="flex items-center"
               >
                 <figure className="w-[45px]">

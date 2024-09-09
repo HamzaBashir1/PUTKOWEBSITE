@@ -1,39 +1,53 @@
+"use client"
 import React from 'react';
 import Image from 'next/image';
-import putko from '../../../public/putko.png';
 import Link from 'next/link';
-
-
+import { useRouter } from 'next/navigation';
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { FaHome, FaBars, FaEnvelope, FaCalendarAlt, FaChartLine, FaList } from 'react-icons/fa';
 import { RxDashboard } from "react-icons/rx";
-import { RiMenu2Fill } from "react-icons/ri";
-import { MdOutlineEmail } from "react-icons/md";
+import { RiMenu2Fill, RiHotelLine } from "react-icons/ri";
+import { MdOutlineEmail, MdOutlineShowChart, MdEuro, MdOutlinePercent, MdOutlineSubscriptions } from "react-icons/md";
 import { LuCalendarDays } from "react-icons/lu";
-import { MdOutlineShowChart } from "react-icons/md";
 import { FaRegStar } from "react-icons/fa";
-import { MdEuro } from "react-icons/md";
-import { MdOutlinePercent } from "react-icons/md";
 import { WiTime10 } from "react-icons/wi";
-import { LiaFileInvoiceSolid } from "react-icons/lia";
-import { HiMenuAlt2 } from "react-icons/hi";
-import { RiHotelLine } from "react-icons/ri";
-import { GoSync } from "react-icons/go";
-import { MdOutlineSubscriptions } from 'react-icons/md';
-import { CiSearch } from 'react-icons/ci';
-import { BiPlus } from 'react-icons/bi';
+import { GoSync, GoSignOut } from "react-icons/go";
 import { BsPersonCircle } from 'react-icons/bs';
 import { FaHourglassHalf } from "react-icons/fa6";
-import { HiOutlineDotsHorizontal } from "react-icons/hi";
+import { HiOutlineDotsHorizontal, HiMenuAlt2 } from "react-icons/hi";
+import { LiaFileInvoiceSolid } from "react-icons/lia";
 import Header from "../components/Header/Header";
 import Card from "./component/Card";
+import { toast } from 'react-toastify';
 
 const ProfilePage = () => {
+    const { dispatch, user } = useContext(AuthContext);
+
+    const router = useRouter(); 
+    const handleLogout = () => {
+        
+    
+        try {
+            // Attempt logout
+            dispatch({ type: "LOGOUT" });
+    
+            // If successful, show success toast and redirect
+            toast.success("Successfully logged out");
+            router.push('/'); // Redirect to the home page
+        } catch (error) {
+            // If there's an error during logout, show error toast
+            toast.error("Logout failed. Please try again.");
+        }
+    };
+
     return (
         <div className="flex bg-[#EEF1F5]">
             {/* Sidebar */}
             <aside id="logo-sidebar" className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-[#292A34]">
                 <div className="h-full px-3 py-4 overflow-y-auto">
                     <Link href="/" className="flex items-center ps-2.5 mb-5 py-5">
-                        <Image src={putko} className="h-6 w-20 me-3 sm:h-7" alt="Putko Logo" />
+                        <Image src="/putko.png" width={100} height={100} className="w-20 h-6 me-3 sm:h-7" alt="Putko Logo" />
                     </Link>
                     <ul className="space-y-2 font-medium text-white">
                         {[
@@ -53,10 +67,19 @@ const ProfilePage = () => {
                             <li key={text}>
                                 <Link href={href} className='flex items-center gap-5 p-2 rounded-lg hover:bg-[#41424e]'>
                                     {icon}
-                                    <span className="font-medium text-sm">{text}</span>
+                                    <span className="text-sm font-medium">{text}</span>
                                 </Link>
                             </li>
                         ))}
+                        <li>
+                            <button
+                                onClick={handleLogout}
+                                className='flex items-center gap-5 p-2 rounded-lg hover:bg-[#41424e] text-white w-full text-left'
+                            >
+                                <GoSignOut />
+                                <span className="text-sm font-medium">Logout</span>
+                            </button>
+                        </li>
                     </ul>
                 </div>
             </aside>
@@ -64,41 +87,54 @@ const ProfilePage = () => {
             {/* Main Content */}
             <div className="flex-1 p-4 sm:ml-64">
                 {/* Mobile menu button */}
-                <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
-                    <span className="sr-only">Open sidebar</span>
-                    <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
-                    </svg>
-                </button>
-
                 {/* Header */}
-                <Header />
-
-                {/* Date and Image */}
-                <div className='flex justify-between mx-5 bg-[#EEF1F5] py-5'>
-                    <div className='flex flex-row gap-5 items-center'>
-                        <h1 className='text-[#292A34] text-8xl'>6</h1>
-                        <span className='text-[#292A34] text-2xl'>September</span>
+                <div className='hidden lg:inline'>
+                    <Header />
+                </div>
+                <div className="flex flex-row justify-between w-full lg:hidden">
+                    <div className="space-x-4 ">
+                        <FaHome className="text-2xl text-gray-700 hover:text-black" />
                     </div>
                     <div>
-                        <Image src={putko} className='w-20 rounded-full' alt="Profile Image" />
+                        <FaList className="text-2xl text-gray-700 hover:text-black" />
+                    </div>
+                    <FaEnvelope className="text-2xl text-gray-700 hover:text-black" />
+                    <div>
+                        <FaCalendarAlt className="text-2xl text-gray-700 hover:text-black" />
+                    </div>
+                    <div>
+                        <FaChartLine className="text-2xl text-gray-700 hover:text-black" />
+                    </div>
+                    <div>
+                        <FaBars className="text-2xl text-gray-700 hover:text-black" />
+                    </div>
+                </div>
+
+                {/* Date and Image */}
+                <div className='flex justify-between mx-5 bg-[#EEF1F5] py-5 flex-row lg:flex-row items-center'>
+                    <div className='flex flex-row items-center gap-2 sm:gap-5'>
+                        <h1 className='text-[#292A34] text-6xl sm:text-8xl'>6</h1>
+                        <span className='text-[#292A34] text-lg sm:text-2xl'>September</span>
+                    </div>
+                    <div className='mt-4 sm:mt-0'>
+                        <BsPersonCircle className="text-[#292A34] text-xl" />
                     </div>
                 </div>
 
                 {/* Subscription Info */}
-                <div className='flex justify-between bg-[#FFFDCC] py-5 mx-5 mb-5'>
-                    <div className='flex flex-row gap-5 items-center'>
+                <div className='flex justify-between bg-[#FFFDCC] py-5 px-5 sm:mx-5 mb-5 flex-col sm:flex-row items-center'>
+                    <div className='flex flex-row items-center gap-5'>
                         <FaHourglassHalf size={45} />
-                        <div className='flex flex-col'>
-                            <h1 className='text-[#292A34] font-semibold text-base'>Subscription ends Aug 27, 2025</h1>
-                            <p>355 days left until expiration</p>
+                        <div className='flex flex-col text-center sm:text-left'>
+                            <h1 className='text-[#292A34] font-semibold text-sm sm:text-base'>Subscription ends Aug 27, 2025</h1>
+                            <p className='text-xs sm:text-sm'>355 days left until expiration</p>
                         </div>
                     </div>
-                    <button className='bg-[#292A34] py-3 px-6 rounded-md text-white'>Extend Subscription</button>
+                    <button className='bg-[#292A34] py-2 sm:py-3 px-4 sm:px-6 rounded-md text-white mt-4 sm:mt-0'>Extend Subscription</button>
                 </div>
 
                 {/* Cards Grid */}
-                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 bg-[#EEF1F5]'>
+                <div className='grid grid-cols-2 lg:grid-cols-3 gap-5 bg-[#EEF1F5]'>
                     {[
                         { title: "Reservation requests", Icon: RiMenu2Fill },
                         { title: "News", Icon: MdOutlineEmail },

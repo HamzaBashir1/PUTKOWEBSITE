@@ -11,8 +11,7 @@ const Section = () => {
         <Image
           src={section}
           alt="Section background"
-          layout="fill"
-          objectFit="cover"
+          fill
           className="w-full h-full"
         />
       </div>

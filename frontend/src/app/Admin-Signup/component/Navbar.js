@@ -51,7 +51,7 @@ const Navbar = () => {
           {/* Profile or Login */}
           {token && user ? (
             <Link
-              href={`/${role === "guest" ? "/Host" : "/Host"}`}
+              href={`/${role === "guest" ? "Profile" : "Profile"}`}
               className="flex items-center"
             >
               <figure className="w-[45px]">

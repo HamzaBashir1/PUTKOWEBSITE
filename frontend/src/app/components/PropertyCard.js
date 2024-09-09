@@ -13,7 +13,7 @@ const PropertyCard = () => {
   return (
     <div className='flex flex-col border rounded-lg overflow-hidden w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg'>
         <div className='relative w-full h-56 sm:h-64'>
-            <Image src={putko} alt="Bedroom" layout='fill' objectFit='cover' />
+            <Image src={putko} alt="Bedroom" fill  />
             <div className='absolute top-2 right-2 bg-[#00000059] rounded-full p-1 sm:p-2'>
                 <BiHeart className='text-xl sm:text-2xl text-[#4FBE9F]' />
             </div>

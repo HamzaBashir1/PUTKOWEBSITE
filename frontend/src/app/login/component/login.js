@@ -7,7 +7,7 @@ import { AuthContext } from "../../context/AuthContext.js";
 import HashLoader from "react-spinners/HashLoader";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import P from "../../../../public/P.png";
+// import P from "../../../../public/P.png";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -65,7 +65,7 @@ const Login = () => {
       <div className="flex flex-col items-center">
         <div className="mb-5">
           <Image
-            src={P}
+            src="/P.png"
             width={48}
             height={48}
             className="border bg-gradient-to-t from-white to-[#D0D5DD] rounded-lg"
@@ -175,7 +175,7 @@ const Login = () => {
         <p className="text-sm font-light text-gray-500 dark:text-gray-400 mt-4">
           Don't have an account?{" "}
           <Link
-            href="/register"
+            href="/Signup"
             className="font-medium text-primary-600 hover:underline dark:text-primary-500"
           >
             Register here
