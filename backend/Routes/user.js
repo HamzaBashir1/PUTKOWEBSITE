@@ -19,6 +19,6 @@ router.get('/:id', authenticate, restrict(['guest']), getSingleUser);
 router.get('/', authenticate, restrict(['admin']),  getAllUser);
 router.put('/:id', authenticate, restrict(['guest']), updateUser);
 router.delete('/:id', authenticate, restrict(['guest']), deleteUser);
-router.get('/:id', authenticate, restrict(['guest']), getUserProfile);
+router.get('/profile/me/:id', authenticate, restrict(['guest']), getUserProfile);
 
 export default router;

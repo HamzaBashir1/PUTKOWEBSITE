@@ -25,12 +25,12 @@ export default function RootLayout({ children }) {
             <ToastContainer
               theme="dark"
               position="top-right"
-              autoClose={10000}
+              autoClose={5000}
               closeOnClick
               pauseOnHover={false}
             />
           <Footer/>
-          </AuthContextProvider>
+        </AuthContextProvider>
       </body>
       
     </html>
