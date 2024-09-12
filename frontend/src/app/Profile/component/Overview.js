@@ -16,23 +16,22 @@ import News from './News';
 import Rating from './Rating';
 import Statistics from './Statistics';
 import Reservation from './Reservation';
+import { AuthContext } from "../../context/AuthContext"; 
 
 const Overview = () => {
+  
   const [activePage, setActivePage] = useState(''); // Control the active page state
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  // Update the current date every 24 hours
+  // Fetch the correct current date when the component mounts
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentDate(new Date());
-    }, 1000 * 60 * 60 * 24);
-
-    return () => clearInterval(interval);
-  }, []);
+    const now = new Date(); // Fetch the current date immediately
+    setCurrentDate(now);
+  }, []); // Empty dependency array ensures this runs only once when the component mounts
 
   // Get day and month for display
   const day = currentDate.getDate();
-  const month = currentDate.toLocaleString('default', { month: 'long' });
+  const month = currentDate.toLocaleString("default", { month: "long" });
 
   return (
     <div className="flex-1 p-4 sm:ml-64 bg-[#EEF1F5]">
@@ -68,6 +67,7 @@ const Overview = () => {
           </div>
           <div className='mt-4 sm:mt-0'>
             <BsPersonCircle className="text-[#292A34] text-xl" />
+            
           </div>
         </div>
 

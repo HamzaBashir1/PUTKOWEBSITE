@@ -1,9 +1,8 @@
-"use client"
-import React, { useState } from 'react';
+"use client";
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { FaHome, FaBars, FaEnvelope, FaCalendarAlt, FaChartLine, FaList } from 'react-icons/fa';
 import { RxDashboard } from "react-icons/rx";
@@ -20,62 +19,92 @@ import { LiaFileInvoiceSolid } from "react-icons/lia";
 import Header from "../components/Header/Header";
 import Card from "./component/Card";
 import { toast } from 'react-toastify';
-import Overview from './component/Overview'
-import Calender from './component/Calender'
-import News from './component/News'
-import Rating from './component/Rating'
-import Statistics from './component/Statistics'
-import Reservation from './component/Reservation'
+import Overview from './component/Overview';
+import Calender from './component/Calender';
+import News from './component/News';
+import Rating from './component/Rating';
+import Statistics from './component/Statistics';
+import Reservation from './component/Reservation';
+import Price from './component/Price'
 
 const ProfilePage = () => {
+    const handleCardClick = (page) => {
+        // Set the active page or perform any action when a card is clicked
+        setActivePage(page);
+        console.log(`Card clicked: ${page}`);
+      };
   const { dispatch, user } = useContext(AuthContext);
   const [activePage, setActivePage] = useState(' ');
-
+  const [sidebarOpen, setSidebarOpen] = useState(false);  // State to track sidebar visibility
+  const sidebarRef = useRef(null);  // Reference to sidebar for detecting clicks outside
   const router = useRouter(); 
+
   const handleLogout = () => {
       try {
-          // Attempt logout
           dispatch({ type: "LOGOUT" });
-  
-          // If successful, show success toast and redirect
           toast.success("Successfully logged out");
-          router.push('/'); // Redirect to the home page
+          router.push('/');
       } catch (error) {
-          // If there's an error during logout, show error toast
           toast.error("Logout failed. Please try again.");
       }
   };
 
+  // Close sidebar when clicking outside of it
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setSidebarOpen(false);  // Close the sidebar if clicking outside
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [sidebarRef]);
+
   return (
       <div className="flex bg-[#EEF1F5]">
           {/* Sidebar */}
-          <aside id="logo-sidebar" className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-[#292A34]">
+          <aside 
+              ref={sidebarRef}  // Attach the ref to the sidebar
+              id="logo-sidebar" 
+              className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform bg-[#292A34] ${
+                  sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+              } sm:translate-x-0`}
+          >
               <div className="h-full px-3 py-4 overflow-y-auto">
                   <Link href="/" className="flex items-center ps-2.5 mb-5 py-5">
                       <Image src="/putko.png" width={100} height={100} className="w-20 h-6 me-3 sm:h-7" alt="Putko Logo" />
                   </Link>
                   <ul className="space-y-2 font-medium text-white">
-                      {[
-                          { icon: <RxDashboard   onClick={() => setActivePage(' ')}/>, text: 'Overview', href: '#' },
-                          { icon: <RiMenu2Fill onClick={() => setActivePage('reservation')}/>, text: 'Reservation requests',href:'#' },
-                          { icon: <MdOutlineEmail onClick={() => setActivePage('News')}/>, text: 'News', href: '#' },
-                          { icon: <LuCalendarDays onClick={() => setActivePage('Calender')} />, text: 'Occupancy calendar', href: '#' },
-                          { icon: <MdOutlineShowChart onClick={() => setActivePage('Statistics')}/>, text: 'Statistics', href: '#' },
-                          { icon: <FaRegStar onClick={() => setActivePage('Rating')}/>, text: 'Rating', href: '#' },
-                          { icon: <MdEuro />, text: 'Prices', href: '#' },
-                          { icon: <MdOutlinePercent />, text: 'Promotions and discounts', href: '#' },
-                          { icon: <WiTime10 />, text: 'Last minute', href: '#' },
-                          { icon: <RiHotelLine />, text: 'Accommodation', href: '#' },
-                          { icon: <GoSync />, text: 'Calendar synchronization', href: '#' },
-                          { icon: <MdOutlineSubscriptions />, text: 'Subscription', href: '#' },
-                      ].map(({ icon, text, href }) => (
-                          <li key={text}>
-                              <Link href={href} className='flex items-center gap-5 p-2 rounded-lg hover:bg-[#41424e]'>
-                                  {icon}
-                                  <span className="text-sm font-medium">{text}</span>
-                              </Link>
-                          </li>
-                      ))}
+                  {[
+                    { icon: <RxDashboard />, text: 'Overview', href: '#', page: ' ' },
+                    { icon: <RiMenu2Fill />, text: 'Reservation requests', href: '#', page: 'reservation' },
+                    { icon: <MdOutlineEmail />, text: 'News', href: '#', page: 'News' },
+                    { icon: <LuCalendarDays />, text: 'Occupancy calendar', href: '#', page: 'Calender' },
+                    { icon: <MdOutlineShowChart />, text: 'Statistics', href: '#', page: 'Statistics' },
+                    { icon: <FaRegStar />, text: 'Rating', href: '#', page: 'Rating' },
+                    { icon: <MdEuro />, text: 'Prices', href: '#' },
+                    { icon: <MdOutlinePercent />, text: 'Promotions and discounts', href: '#' },
+                    { icon: <WiTime10 />, text: 'Last minute', href: '#' },
+                    { icon: <RiHotelLine />, text: 'Accommodation', href: '#' },
+                    { icon: <GoSync />, text: 'Calendar synchronization', href: '#' },
+                    { icon: <MdOutlineSubscriptions />, text: 'Subscription', href: '#' },
+                  ].map(({ icon, text, href, page }) => (
+                    <li key={text}>
+                      <Link
+                        href={href}
+                        className={`flex items-center gap-5 p-2 rounded-lg hover:bg-[#41424e] ${
+                          activePage === page ? 'bg-[#41424e]' : ''
+                        }`} // Apply active styling if the tab is active
+                        onClick={() => setActivePage(page)}
+                      >
+                        {icon}
+                        <span className="text-sm font-medium">{text}</span>
+                      </Link>
+                    </li>
+                  ))}
                       <li>
                           <button
                               onClick={handleLogout}
@@ -91,14 +120,13 @@ const ProfilePage = () => {
 
           {/* Main Content */}
           <div className="flex-1 p-4 sm:ml-64">
-              {/* Conditionally show Header only on Overview page */}
-              {activePage === ' ' && (
-                  <div className='hidden lg:inline'>
-                      <Header />
-                  </div>
-              )}
-
-              <div className="flex flex-row justify-between w-full lg:hidden ">
+              {/* Navbar for small screens */}
+              <div className="flex items-center justify-between lg:hidden">
+              
+                  <FaBars
+                      className="text-2xl text-gray-700 cursor-pointer hover:text-black"
+                      onClick={() => setSidebarOpen(!sidebarOpen)}  // Toggle sidebar visibility
+                  />
                   <div className="space-x-4 ">
                       <FaHome className="text-2xl text-gray-700 hover:text-black" />
                   </div>
@@ -112,10 +140,14 @@ const ProfilePage = () => {
                   <div>
                       <FaChartLine className="text-2xl text-gray-700 hover:text-black" />
                   </div>
-                  <div>
-                      <FaBars className="text-2xl text-gray-700 hover:text-black" />
-                  </div>
               </div>
+
+              {/* Conditionally show Header only on Overview page */}
+              {activePage === ' ' && (
+                  <div className='hidden lg:inline'>
+                      <Header />
+                  </div>
+              )}
 
               {/* Conditional page rendering */}
               {activePage === '' && (
@@ -136,7 +168,11 @@ const ProfilePage = () => {
               {activePage === 'Statistics' && (
                   <Statistics/>
               )}
+              {activePage === 'Statistics' && (
+                  <Price/>
+              )}
 
+              {/* More content on the Overview page */}
               {activePage === ' ' && (
                   <div>
                       <div className='flex justify-between mx-5 bg-[#EEF1F5] py-5 flex-row lg:flex-row items-center'>
@@ -162,32 +198,34 @@ const ProfilePage = () => {
                       </div>
 
                       {/* Cards Grid */}
-                      <div className='grid grid-cols-2 lg:grid-cols-3 gap-5 bg-[#EEF1F5]'>
-                          {[
-                              { title: "Reservation requests", Icon: RiMenu2Fill },
-                              { title: "News", Icon: MdOutlineEmail },
-                              { title: "Occupancy calendar", Icon: LuCalendarDays },
-                              { title: "Statistics", Icon: MdOutlineShowChart },
-                              { title: "Rating", Icon: FaRegStar },
-                              { title: "Prices", Icon: MdEuro },
-                              { title: "Promotions and discounts", Icon: MdOutlinePercent },
-                              { title: "Last minute", Icon: WiTime10 },
-                              { title: "Accommodation", Icon: RiHotelLine },
-                              { title: "Synchronization", Icon: GoSync },
-                              { title: "Subscription", Icon: MdOutlineSubscriptions },
-                              { title: "Additional services", Icon: HiOutlineDotsHorizontal },
-                              { title: "Invoices", Icon: LiaFileInvoiceSolid },
-                              { title: "Billing data", Icon: HiMenuAlt2 },
-                          ].map(({ title, Icon }, index) => (
-                              <Card 
-                                  key={index}
-                                  title={title}
-                                  Icon={Icon}
-                                  iconSize="4xl"
-                                  customClasses="bg-gray-100"
-                              />
-                          ))}
-                      </div>
+                      <div className="grid grid-cols-2 lg:grid-cols-3 gap-5 bg-[#EEF1F5]">
+                      {[
+                        { title: "Reservation requests", Icon: RiMenu2Fill, page: "reservation" },
+                        { title: "News", Icon: MdOutlineEmail, page: "News" },
+                        { title: "Occupancy calendar", Icon: LuCalendarDays, page: "Calender" },
+                        { title: "Statistics", Icon: MdOutlineShowChart, page: "Statistics" },
+                        { title: "Rating", Icon: FaRegStar, page: "Rating" },
+                        { title: "Prices", Icon: MdEuro, page: "Prices" },
+                        { title: "Promotions and discounts", Icon: MdOutlinePercent, page: "Promotions" },
+                        { title: "Last minute", Icon: WiTime10, page: "LastMinute" },
+                        { title: "Accommodation", Icon: RiHotelLine, page: "Accommodation" },
+                        { title: "Synchronization", Icon: GoSync, page: "Synchronization" },
+                        { title: "Subscription", Icon: MdOutlineSubscriptions, page: "Subscription" },
+                        { title: "Additional services", Icon: HiOutlineDotsHorizontal, page: "AdditionalServices" },
+                        { title: "Invoices", Icon: LiaFileInvoiceSolid, page: "Invoices" },
+                        { title: "Billing data", Icon: HiMenuAlt2, page: "BillingData" },
+                      ].map(({ title, Icon, page }, index) => (
+                        <Card
+                          key={index}
+                          title={title}
+                          Icon={Icon}
+                          iconSize="4xl"
+                          customClasses="bg-gray-100"
+                          onClick={() => handleCardClick(page)} // Add onClick handler
+                        />
+                      ))}
+                    </div>
+                    
                   </div>
               )}
           </div>
