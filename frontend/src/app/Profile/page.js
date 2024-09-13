@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { AuthContext } from "../context/AuthContext";
-import { FaHome, FaBars, FaEnvelope, FaCalendarAlt, FaChartLine, FaList } from 'react-icons/fa';
+import { FaHome, FaBars, FaEnvelope, FaCalendarAlt, FaChartLine, FaList, FaFileInvoice } from 'react-icons/fa';
 import { RxDashboard } from "react-icons/rx";
 import { RiMenu2Fill, RiHotelLine } from "react-icons/ri";
 import { MdOutlineEmail, MdOutlineShowChart, MdEuro, MdOutlinePercent, MdOutlineSubscriptions } from "react-icons/md";
@@ -26,6 +26,13 @@ import Rating from './component/Rating';
 import Statistics from './component/Statistics';
 import Reservation from './component/Reservation';
 import Price from './component/Price'
+import Invoice from './component/Invoice'
+import Subscription from './component/Subscription'
+import { BiDotsHorizontalRounded } from 'react-icons/bi';
+import AdditionalServices from './component/AdditionalServices'
+import LastMinute from './component/LastMinute'
+import { BiTime } from 'react-icons/bi';
+import Synchronization from './component/Synchronization'
 
 const ProfilePage = () => {
     const handleCardClick = (page) => {
@@ -63,6 +70,18 @@ const ProfilePage = () => {
     };
   }, [sidebarRef]);
 
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  // Fetch the correct current date when the component mounts
+  useEffect(() => {
+    const now = new Date(); // Fetch the current date immediately
+    setCurrentDate(now);
+  }, []); // Empty dependency array ensures this runs only once when the component mounts
+
+  // Get day and month for display
+  const day = currentDate.getDate();
+  const month = currentDate.toLocaleString("default", { month: "long" });
+
   return (
       <div className="flex bg-[#EEF1F5]">
           {/* Sidebar */}
@@ -85,12 +104,15 @@ const ProfilePage = () => {
                     { icon: <LuCalendarDays />, text: 'Occupancy calendar', href: '#', page: 'Calender' },
                     { icon: <MdOutlineShowChart />, text: 'Statistics', href: '#', page: 'Statistics' },
                     { icon: <FaRegStar />, text: 'Rating', href: '#', page: 'Rating' },
-                    { icon: <MdEuro />, text: 'Prices', href: '#' },
+                    { icon: <MdEuro />, text: 'Prices', href: '#' ,page:'Price'},
                     { icon: <MdOutlinePercent />, text: 'Promotions and discounts', href: '#' },
-                    { icon: <WiTime10 />, text: 'Last minute', href: '#' },
+                    { icon: <BiTime/>, text: 'Last Minutes', href: '', page:'LastMinute'},
                     { icon: <RiHotelLine />, text: 'Accommodation', href: '#' },
-                    { icon: <GoSync />, text: 'Calendar synchronization', href: '#' },
-                    { icon: <MdOutlineSubscriptions />, text: 'Subscription', href: '#' },
+                    { icon: <GoSync />, text: 'Calender synchronization', href: '#', page: 'Synchronization' },
+                    { icon: <MdOutlineSubscriptions />, text: 'Subscription', href: '#', page: 'Subscription' },
+                    { icon: <FaFileInvoice/>, text: 'Invoice', href: '#', page:'Invoice'},
+                    { icon: <BiDotsHorizontalRounded/>, text: 'AdditionalServices', href: '#', page:'AdditionalServices'},
+                    
                   ].map(({ icon, text, href, page }) => (
                     <li key={text}>
                       <Link
@@ -168,8 +190,23 @@ const ProfilePage = () => {
               {activePage === 'Statistics' && (
                   <Statistics/>
               )}
-              {activePage === 'Statistics' && (
+              {activePage === 'Price' && (
                   <Price/>
+              )}
+              {activePage === 'Invoice' && (
+                  <Invoice/>
+              )}
+              {activePage === 'Subscription' && (
+                  <Subscription/>
+              )}
+              {activePage === 'AdditionalServices' && (
+                  <AdditionalServices />
+              )}
+              {activePage === 'LastMinute' && (
+                  <LastMinute />
+              )}
+              {activePage === 'Synchronization' && (
+                  <Synchronization />
               )}
 
               {/* More content on the Overview page */}
@@ -177,8 +214,8 @@ const ProfilePage = () => {
                   <div>
                       <div className='flex justify-between mx-5 bg-[#EEF1F5] py-5 flex-row lg:flex-row items-center'>
                           <div className='flex flex-row items-center gap-2 sm:gap-5'>
-                              <h1 className='text-[#292A34] text-6xl sm:text-8xl'>6</h1>
-                              <span className='text-[#292A34] text-lg sm:text-2xl'>September</span>
+                              <h1 className='text-[#292A34] text-6xl sm:text-8xl'>{day}</h1>
+                              <span className='text-[#292A34] text-lg sm:text-2xl'>{month}</span>
                           </div>
                           <div className='mt-4 sm:mt-0'>
                               <BsPersonCircle className="text-[#292A34] text-xl" />
