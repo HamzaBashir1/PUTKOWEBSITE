@@ -57,6 +57,7 @@ const Header = () => {
             onClick={toggleMenu}
           >
             <CiSearch className="text-xl text-gray-500" />
+            
             <button className="flex items-center bg-white text-black border border-gray-300 px-4 py-2 rounded-lg space-x-2 hover:bg-gray-100">
               <BiPlus className="text-lg" />
               <span>Add Accommodation</span>
