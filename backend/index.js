@@ -8,7 +8,7 @@ import userRoutes from "./Routes/user.js";
 import cors from "cors";
 import passport from './Controllers/passport.js'
 import session from 'express-session';
-
+import PlanRoutes from  './Routes/PlanRoutes.js'
 
 dotenv.config();
 
@@ -50,6 +50,8 @@ app.use(cors(corsOptions));
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRouter);
+app.use('/api', PlanRoutes);
+
 
 app.listen(Port, () => {
   connectDB();
