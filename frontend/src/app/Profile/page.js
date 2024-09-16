@@ -28,11 +28,12 @@ import Reservation from './component/Reservation';
 import Price from './component/Price'
 import Invoice from './component/Invoice'
 import Subscription from './component/Subscription'
-import { BiDotsHorizontalRounded } from 'react-icons/bi';
+import { BiDotsHorizontalRounded, BiPlus } from 'react-icons/bi';
 import AdditionalServices from './component/AdditionalServices'
 import LastMinute from './component/LastMinute'
 import { BiTime } from 'react-icons/bi';
 import Synchronization from './component/Synchronization'
+import AddAccommodation from './component/AddAccommodation'
 
 const ProfilePage = () => {
     const handleCardClick = (page) => {
@@ -111,8 +112,8 @@ const ProfilePage = () => {
                     { icon: <GoSync />, text: 'Calender synchronization', href: '#', page: 'Synchronization' },
                     { icon: <MdOutlineSubscriptions />, text: 'Subscription', href: '#', page: 'Subscription' },
                     { icon: <FaFileInvoice/>, text: 'Invoice', href: '#', page:'Invoice'},
-                    { icon: <BiDotsHorizontalRounded/>, text: 'AdditionalServices', href: '#', page:'AdditionalServices'},
-                    
+                    { icon: <BiDotsHorizontalRounded/>, text: 'Additional Services', href: '#', page:'AdditionalServices'},
+                    { icon: <BiPlus/>, text: 'Add Accommodation', href: '#', page:'AddAccommodation'},
                   ].map(({ icon, text, href, page }) => (
                     <li key={text}>
                       <Link
@@ -208,6 +209,9 @@ const ProfilePage = () => {
               {activePage === 'Synchronization' && (
                   <Synchronization />
               )}
+              {activePage === 'AddAccommodation' && (
+                  <AddAccommodation />
+              )}
 
               {/* More content on the Overview page */}
               {activePage === ' ' && (
@@ -251,6 +255,7 @@ const ProfilePage = () => {
                         { title: "Additional services", Icon: HiOutlineDotsHorizontal, page: "AdditionalServices" },
                         { title: "Invoices", Icon: LiaFileInvoiceSolid, page: "Invoices" },
                         { title: "Billing data", Icon: HiMenuAlt2, page: "BillingData" },
+                        { title: "Add Accommodation", Icon: BiPlus, page: "AddAccommodation" },
                       ].map(({ title, Icon, page }, index) => (
                         <Card
                           key={index}
