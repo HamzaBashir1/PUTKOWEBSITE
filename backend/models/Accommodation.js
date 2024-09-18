@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const accommodationSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: false
   },
   description: {
     type: String
@@ -18,7 +18,7 @@ const accommodationSchema = new mongoose.Schema({
   },
   price: {
     type: Number,
-    required: true
+    required: false
   },
   discount: {
     type: Number
@@ -26,7 +26,7 @@ const accommodationSchema = new mongoose.Schema({
   location: {
     address: {
       type: String,
-      required: true
+      required: false
     },
     latitude: {
       type: Number
@@ -35,23 +35,76 @@ const accommodationSchema = new mongoose.Schema({
       type: Number
     }
   },
+  locationDetails: {
+    streetAndNumber: {
+      type: String
+    },
+    city: {
+      type: String
+    },
+    zipCode: {
+      type: String
+    },
+    country: {
+      type: String
+    },
+    locationDescription: {
+      type: String
+    },
+    placesNearby: [
+      {
+        placeType: {
+          type: String,
+          enum: [
+              'Restaurant',
+              'Supermarket',
+              'BusStation',
+              'TrainStation',
+              'Airport',
+              'SkiSlope',
+              'AquaPark',
+              'TouristTrail',
+              'CycleRoute',
+              'ATM',
+              'GasStation',
+              'ChargingStation',
+              'CableCar',
+              'SwimmingPool',
+              'WaterArea',
+              'TheSea',
+              'Beach',
+              'Castle',
+              'Zoo',
+              'Museum',
+              'BusinessCenter',
+          ]
+        },
+        distance: {
+          type: Number
+        }
+      }
+    ]
+  },
   contactDetails: {
     host: {
       type: String,
-      required: true
+      required: false
     },
     phone: {
       type: String,
-      required: true
+      required: false
     },
     email: {
       type: String,
-      required: true
+      required: false
     },
     website: {
       type: String
     },
     whatsapp: {
+      type: String
+    },
+    additionalContactInfo: {
       type: String
     }
   },
@@ -59,18 +112,34 @@ const accommodationSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', // Reference to the User model
-    required: true // Ensure that every accommodation has a user associated with it
+    required: false // Ensure that every accommodation has a user associated with it
   },
-  additionalContactInformation: String,
   arrivalAndDeparture: {
-    arrivalFrom: String,
-    arrivalTo: String,
-    departureFrom: String,
-    departureTo: String
-  },
+    arrivalFrom: {
+      type: String, // Store as a string in "HH:MM" format
+      required: true,
+    },
+    arrivalTo: {
+      type: String, // Store as a string in "HH:MM" format
+      required: true,
+    },
+    departureFrom: {
+      type: String, // Store as a string in "HH:MM" format
+      required: true,
+    },
+    departureTo: {
+      type: String, // Store as a string in "HH:MM" format
+      required: true,
+    }
+  },    
   checkinCheckoutProcess: {
     type: String,
-    enum: ['Reception', 'Reception 24/7', 'Self-Service Accommodation Process', 'By Agreement with Accommodation Provider']
+    enum: [
+      'Reception',
+      'Reception 24/7',
+      'Self-Service Accommodation Process',
+      'By Agreement with Accommodation Provider'
+    ]
   },
   wifi: {
     type: String,
@@ -141,10 +210,27 @@ const accommodationSchema = new mongoose.Schema({
       type: String
     }
   ],
-  Calender: {
-    type: String,
-    
-  }
+  occupancyCalendar: [
+    {
+      startDate: {
+        type: Date,
+        required: false
+      },
+      endDate: {
+        type: Date,
+        required: false
+      },
+      guestName: {
+        type: String,
+        default: 'N/A'
+      },
+      status: {
+        type: String,
+        enum: ['booked', 'available', 'blocked'],
+        default: 'booked'
+      }
+    }
+  ]
 });
 
 export default mongoose.model('Accommodation', accommodationSchema);

@@ -1,4 +1,3 @@
-
 "use client"
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
@@ -10,30 +9,48 @@ const useFetchData = (url) => {
 
   const { token } = useContext(AuthContext);
 
+  // Debugging: Ensure token and URL are correct
+  console.log("Fetching URL:", url);
+  console.log("Token:", token);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
+        console.log("Starting data fetch...");
 
         const res = await fetch(url, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
         if (!res.ok) {
-          throw new Error(res.statusText);
+          // Log detailed error
+          const errorResponse = await res.json();
+          console.error("API Error:", errorResponse);
+          throw new Error(`${res.status}: ${res.statusText}`);
         }
 
         const result = await res.json();
-        setData(result.data);
+        console.log("API Response:", result);
+        
+        // Check if result.data exists
+        if (result.data) {
+          setData(result.data);
+        } else {
+          console.warn("Unexpected API structure:", result);
+          setData(result); // Use the whole response if no 'data' property
+        }
+
         setLoading(false);
       } catch (err) {
-        console.log(err);
-        setLoading(false);
+        console.log("Fetch error:", err);
         setError(err.message);
+        setLoading(false);
       }
     };
+
     if (url && token) {
-      fetchData(); // Only fetch if URL and token exist
+      fetchData();
     }
   }, [url, token]);
 

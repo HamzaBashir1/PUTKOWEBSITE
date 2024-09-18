@@ -34,6 +34,8 @@ import LastMinute from './component/LastMinute'
 import { BiTime } from 'react-icons/bi';
 import Synchronization from './component/Synchronization'
 import AddAccommodation from './component/AddAccommodation'
+import page from '../login/page';
+import AccommodationShow from './component/AccommodationShow'
 
 const ProfilePage = () => {
     const handleCardClick = (page) => {
@@ -108,7 +110,7 @@ const ProfilePage = () => {
                     { icon: <MdEuro />, text: 'Prices', href: '#' ,page:'Price'},
                     { icon: <MdOutlinePercent />, text: 'Promotions and discounts', href: '#' },
                     { icon: <BiTime/>, text: 'Last Minutes', href: '', page:'LastMinute'},
-                    { icon: <RiHotelLine />, text: 'Accommodation', href: '#' },
+                    { icon: <RiHotelLine />, text: 'Accommodation', href: '#', page: 'AccommodationShow' },
                     { icon: <GoSync />, text: 'Calender synchronization', href: '#', page: 'Synchronization' },
                     { icon: <MdOutlineSubscriptions />, text: 'Subscription', href: '#', page: 'Subscription' },
                     { icon: <FaFileInvoice/>, text: 'Invoice', href: '#', page:'Invoice'},
@@ -212,6 +214,9 @@ const ProfilePage = () => {
               {activePage === 'AddAccommodation' && (
                   <AddAccommodation />
               )}
+              {activePage === 'AccommodationShow' && (
+                  <AccommodationShow />
+              )}
 
               {/* More content on the Overview page */}
               {activePage === ' ' && (
@@ -249,7 +254,7 @@ const ProfilePage = () => {
                         { title: "Prices", Icon: MdEuro, page: "Prices" },
                         { title: "Promotions and discounts", Icon: MdOutlinePercent, page: "Promotions" },
                         { title: "Last minute", Icon: WiTime10, page: "LastMinute" },
-                        { title: "Accommodation", Icon: RiHotelLine, page: "Accommodation" },
+                        { title: "Accommodation", Icon: RiHotelLine, page: "AccommodationShow" },
                         { title: "Synchronization", Icon: GoSync, page: "Synchronization" },
                         { title: "Subscription", Icon: MdOutlineSubscriptions, page: "Subscription" },
                         { title: "Additional services", Icon: HiOutlineDotsHorizontal, page: "AdditionalServices" },
