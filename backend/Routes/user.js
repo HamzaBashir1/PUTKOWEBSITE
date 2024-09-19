@@ -18,7 +18,7 @@ const router = express.Router();
 router.get('/:id', authenticate, restrict(['guest']), getSingleUser);
 router.get('/', authenticate, restrict(['admin']),  getAllUser);
 router.put('/:id', authenticate, restrict(['guest']), updateUser);
-router.delete('/:id', authenticate, restrict(['guest']), deleteUser);
+router.delete('/:id', deleteUser);
 router.get('/profile/me/:id', authenticate, restrict(['guest']), getUserProfile);
 
 export default router;

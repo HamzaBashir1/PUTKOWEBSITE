@@ -11,7 +11,7 @@ const useFetchData = (url) => {
 
   // Debugging: Ensure token and URL are correct
   console.log("Fetching URL:", url);
-  console.log("Token:", token);
+  // console.log("Token:", token);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,10 +49,10 @@ const useFetchData = (url) => {
       }
     };
 
-    if (url && token) {
+    if (url != null ) {
       fetchData();
     }
-  }, [url, token]);
+  }, [url]);
 
   return { data, loading, error };
 };

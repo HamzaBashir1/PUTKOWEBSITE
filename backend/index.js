@@ -11,6 +11,7 @@ import session from 'express-session';
 import HostRoutes from './Routes/hostRoutes.js'
 import InvoiceRoutes from './Routes/invoiceRoutes.js'
 import accommodationRoutes from './Routes/AccommodationRoutes.js'
+import reviewRoutes from './Routes/ReviewRoutes.js'
 
 dotenv.config();
 
@@ -55,6 +56,7 @@ app.use('/api/admin', adminRouter);
 app.use('/api', HostRoutes);
 app.use('/api', InvoiceRoutes);
 app.use('/api', accommodationRoutes);
+app.use("/api/reviews", reviewRoutes);
 
 
 app.listen(Port, () => {

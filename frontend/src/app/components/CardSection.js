@@ -8,7 +8,7 @@ const CardSection = () => {
         <div className='min-w-full lg:min-w-[calc(24%-0.75rem)] snap-start'>
           <PropertyCard />
         </div>
-        <div className='min-w-full lg:min-w-[calc(24%-0.75rem)] snap-start'>
+        {/* <div className='min-w-full lg:min-w-[calc(24%-0.75rem)] snap-start'>
           <PropertyCard />
         </div>
         <div className='min-w-full lg:min-w-[calc(25%-0.75rem)] snap-start'>
@@ -28,7 +28,7 @@ const CardSection = () => {
         </div>
         <div className='min-w-full lg:min-w-[calc(25%-0.75rem)] snap-start'>
           <PropertyCard />
-        </div>
+        </div> */}
       </div>
     </div>
   );

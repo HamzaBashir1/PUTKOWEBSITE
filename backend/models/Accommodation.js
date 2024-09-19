@@ -210,6 +210,15 @@ const accommodationSchema = new mongoose.Schema({
       type: String
     }
   ],
+  reviews: [{ type: mongoose.Types.ObjectId, ref: "Review" }],
+  averageRating: {
+    type: Number,
+    default: 0,
+  },
+  totalRating: {
+    type: Number,
+    default: 0,
+  },
   occupancyCalendar: [
     {
       startDate: {

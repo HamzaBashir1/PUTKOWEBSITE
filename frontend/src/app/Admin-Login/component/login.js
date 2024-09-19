@@ -42,16 +42,14 @@ const Login = () => {
       dispatch({
         type: "LOGIN_SUCCESS",
         payload: {
-          user: result.data,
+          user: result.admin,
           token: result.token,
-          role: result.role,
+          role: "admin",
         },
       });
 
       setLoading(false);
       toast.success(result.message);
-
-      // Redirect to homepage using useRouter
       router.push("/Admin");
     } catch (err) {
       console.log(err.message);

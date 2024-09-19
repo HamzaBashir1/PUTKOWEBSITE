@@ -1,4 +1,4 @@
-"use client"; // Needed for Next.js client-side rendering
+"use client"
 
 import { createContext, useContext, useEffect, useReducer } from "react";
 

@@ -4,12 +4,10 @@ import MyAccount from './component/MyAccount'
 
 const page = () => {
   return (
-    <div className=''>
-      <section>
-        <Navbar/>
-        <MyAccount/>
-      </section>
-    </div>
+    <div className="">
+    
+    <MyAccount />
+  </div>
   )
 }
 
