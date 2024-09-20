@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import SubscriptionPriceList from './component/SubscriptionPriceList'
 import RentOptions from './component/RentOptions'
 import Navbar from './component/Navbar'
-
 import FormControl from './component/FormControl'
+import Footer from "../components/Footer/Footer"
 
 const page = () => {
   const [currentTab, setCurrentTab] = useState(0); 
@@ -13,9 +13,9 @@ const page = () => {
   };
   return (
     <div>
-    <Navbar/>
-    <FormControl/>
-      
+      <Navbar/>
+      <FormControl/>
+      <Footer />
     </div>
   )
 }

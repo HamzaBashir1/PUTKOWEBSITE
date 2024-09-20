@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import Navbar from './component/Navbar';
 import Content from './component/Content';
-import PropertyStep from './component/PropertyStep'; // Assuming PropertyStep is in the component folder
+import PropertyStep from './component/PropertyStep'; 
+import Footer from "../components/Footer/Footer"
 
 const Page = () => {
   const [showPropertyStep, setShowPropertyStep] = useState(false);
@@ -14,11 +15,11 @@ const Page = () => {
 
   return (
     <div>
+      <Navbar />
       {/* Conditionally render either the main content (Navbar, Content) or PropertyStep */}
       {!showPropertyStep ? (
         <>
           {/* Show Navbar and Content when 'showPropertyStep' is false */}
-          <Navbar />
           <Content />
           <div>
             <hr className='bg-[#DDDDDD] h-[2px]' />
@@ -43,6 +44,7 @@ const Page = () => {
           <PropertyStep />
         </div>
       )}
+      <Footer/>
     </div>
   );
 };

@@ -8,25 +8,24 @@ import Filter from './component/Filter'
 import CommonSection from './component/CommonSection'
 import Email from './component/Email'
 import Navbar from './component/Navbar'
-
+import Footer from "../components/Footer/Footer"
 
 const Page = () => {
   return (
     <div>
-      {/* <Navbar/> */}
       <Navbar/>
-      
-      <div className='bg-[#F3F4F6]'>
-        <Title/>
-        <CardSection />
-        <Discount />
-        <Section />
-        <CardSection />
-        <Pagination/>
-        <Filter/>
-        <CommonSection/>
-        <Email/>
-      </div>
+        <div className='bg-[#F3F4F6]'>
+          <Title/>
+          <CardSection />
+          <Discount />
+          <Section />
+          <CardSection />
+          <Pagination/>
+          <Filter/>
+          <CommonSection/>
+          <Email/>
+        </div>
+      <Footer/>
     </div>
   )
 }

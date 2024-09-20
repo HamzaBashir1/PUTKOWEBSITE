@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "./components/Header/Header"
-import Footer from "./components/Footer/Footer";
+// import Header from "./components/Header/Header"
+// import Footer from "./components/Footer/Footer";
 import { AuthContextProvider } from './context/AuthContext.js'
 import { ToastContainer } from "./Nexttoast";
 import { FormProvider } from './FormContext';
@@ -31,7 +31,7 @@ export default function RootLayout({ children, pageProps }) {
               pauseOnHover={false}
             />
             </FormProvider>
-          <Footer/>
+          {/* <Footer/> */}
         </AuthContextProvider>
       </body>
       

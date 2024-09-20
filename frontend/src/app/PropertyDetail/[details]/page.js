@@ -16,7 +16,9 @@ import Persons from '../component/Persons';
 import CommonSection from '../../List-Page/component/CommonSection';
 import WeatherForecast from '../component/WeatherForecast';
 import Accommodation from '../component/Accommodation';
-import Review from '../component/Review';
+import Loading from "../../components/Loader/Loading.js"
+import Error from "../../components/Error/Error.js"
+import Footer from "../../components/Footer/Footer.js"
 
 const Page = ({ params }) => {
     const [accommodationData, setAccommodationData] = useState();
@@ -46,11 +48,11 @@ const Page = ({ params }) => {
     console.log("Accommodation Data:", accommodationData);
 
     if (loading) {
-        return <p>Loading...</p>;
+        return <Loading />; // Render Loading component
     }
 
     if (error) {
-        return <p>Error: {error}</p>;
+        return <Error message={error} />; // Render Error component with message prop
     }
 
     return (
@@ -72,11 +74,8 @@ const Page = ({ params }) => {
                 <WeatherForecast data={accommodationData} />
                 <CommonSection data={accommodationData} />
                 <EMail data={accommodationData} />
-                {/* <Review  
-                  userId={accommodationData?.userId} 
-                  data={accommodationData} 
-                /> */}
             </div>
+            <Footer/>
         </div>
     );
 }

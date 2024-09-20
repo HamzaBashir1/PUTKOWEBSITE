@@ -38,14 +38,6 @@ const Page = () => {
     <WeatherForecast/>
     <CommonSection/>
     <EMail/>
-      {/* <div className='flex flex-row'>
-        <div className='flex-1'>
-            
-        </div>
-        <div className='mr-96'>
-            
-        </div>
-      </div> */}
     </div>
     </div>
   );
