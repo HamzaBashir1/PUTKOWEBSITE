@@ -16,6 +16,7 @@ import Persons from '../component/Persons';
 import CommonSection from '../../List-Page/component/CommonSection';
 import WeatherForecast from '../component/WeatherForecast';
 import Accommodation from '../component/Accommodation';
+import Review from '../component/Review';
 
 const Page = ({ params }) => {
     const [accommodationData, setAccommodationData] = useState();
@@ -66,10 +67,15 @@ const Page = ({ params }) => {
                 <Accommodation data={accommodationData} />
                 <Diet data={accommodationData} />
                 <Overlook data={accommodationData} />
-                <Ratings data={accommodationData} />
+                <Ratings userId={accommodationData?.userId} 
+                  data={accommodationData}  />
                 <WeatherForecast data={accommodationData} />
                 <CommonSection data={accommodationData} />
                 <EMail data={accommodationData} />
+                {/* <Review  
+                  userId={accommodationData?.userId} 
+                  data={accommodationData} 
+                /> */}
             </div>
         </div>
     );

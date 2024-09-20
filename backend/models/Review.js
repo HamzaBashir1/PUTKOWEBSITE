@@ -1,59 +1,63 @@
 import mongoose from 'mongoose';
-import Accommodation from './Accommodation.js'; // Correct model name
+import Accommodation from './Accommodation.js';
 
-const reviewSchema = new mongoose.Schema(
-  {
-    accommodation: { 
-      type: mongoose.Types.ObjectId,
-      ref: 'Accommodation', // Reference to the Accommodation model
-      required: true,
-    },
-    user: {
-      type: mongoose.Types.ObjectId,
-      ref: 'User', // Reference to the User model
-      required: true,
-    },
-    reviewText: {
-      type: String,
-      required: true,
-    },
-    rating: {
-      type: Number,
-      required: true,
-      min: 0,
-      max: 5,
-      default: 0,
-    },
+const reviewSchema = new mongoose.Schema({
+  accommodation: {
+    type: mongoose.Types.ObjectId,
+    ref: 'Accommodation',
+    required: true,
   },
-  { timestamps: true }
-);
+  user: {
+    type: mongoose.Types.ObjectId,
+    ref: 'User',
+    required: false,
+  },
+  reviewText: {
+    type: String,
+    required: true,
+  },
+  pluses: String,
+  cons: String,
+  overallRating: {
+    type: Number,
+    required: true,
+    min: 1,
+    max: 5,
+    default: 0,
+  },
+  categoryRatings: {
+    Location: { type: Number, min: 0, max: 5, default: 0 },
+    Communication: { type: Number, min: 0, max: 5, default: 0 },
+    Equipment: { type: Number, min: 0, max: 5, default: 0 },
+    Cleanliness: { type: Number, min: 0, max: 5, default: 0 },
+    ClientCare: { type: Number, min: 0, max: 5, default: 0 },
+    WiFi: { type: Number, min: 0, max: 5, default: 0 },
+    Activities: { type: Number, min: 0, max: 5, default: 0 },
+    PriceQuality: { type: Number, min: 0, max: 5, default: 0 },
+  },
+}, { timestamps: true });
 
 // Pre-hook to populate user data when fetching reviews
 reviewSchema.pre(/^find/, function(next) {
   this.populate({
     path: 'user',
-    select: 'name photo', // Adjust fields as necessary
+    select: 'name photo',
   });
-
   next();
 });
 
 // Static method to calculate average ratings for an accommodation
 reviewSchema.statics.calAverageRatings = async function(accommodationId) {
   const stats = await this.aggregate([
-    {
-      $match: { accommodation: accommodationId }
-    },
-    {
-      $group: {
+    { $match: { accommodation: accommodationId } },
+    { $group: {
         _id: '$accommodation',
-        numOfRatings: { $sum: 1 }, // Fixed to numOfRatings
-        avgRating: { $avg: '$rating' }
+        numOfRatings: { $sum: 1 },
+        avgRating: { $avg: '$overallRating' },
       }
     }
   ]);
 
-  // If no ratings found, stats[0] will be undefined
   if (stats.length > 0) {
     await Accommodation.findByIdAndUpdate(accommodationId, {
       totalRating: stats[0].numOfRatings,

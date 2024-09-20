@@ -112,7 +112,7 @@ const accommodationSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', // Reference to the User model
-    required: false // Ensure that every accommodation has a user associated with it
+    required: true // Ensure that every accommodation has a user associated with it
   },
   arrivalAndDeparture: {
     arrivalFrom: {
