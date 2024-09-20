@@ -3,16 +3,22 @@ import React, { useState, useEffect } from "react";
 import { BsStarFill, BsWifi } from "react-icons/bs";
 import { GiPoolDive, GiKnifeFork } from "react-icons/gi";
 import { FaParking, FaSmokingBan, FaPaw } from "react-icons/fa";
+import ChatUI from './ChatUI'
 
 const ReservationCard = ({ data }) => {
   const price = data?.price || [];
   const nightlyRate = price;
+  const userR = data?.userId._id || "user Name";
+    
   const [checkInDate, setCheckInDate] = useState("");
   const [checkOutDate, setCheckOutDate] = useState("");
   const [guests, setGuests] = useState(1);
   const [nights, setNights] = useState(0);
   const [reserved, setReserved] = useState(false);
   const [total, setTotal] = useState(0);
+  const [showPopup, setShowPopup] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+
 
   useEffect(() => {
     if (checkInDate && checkOutDate) {
@@ -53,17 +59,20 @@ const ReservationCard = ({ data }) => {
   const pets = data?.pets;
   const diet = data?.diet;
 
+  const togglePopup = () => {
+    setShowPopup(!showPopup);
+  };
 
   return (
     <div className="bg-[#f8f8f8]">
       <div className="flex flex-col p-4 lg:flex-row lg:space-x-8">
         <div className="flex-1">
-          <div className="bg-white p-4 sm:p-8 flex flex-col lg:flex-row lg:space-x-8 rounded-lg">
+          <div className="flex flex-col p-4 bg-white rounded-lg sm:p-8 lg:flex-row lg:space-x-8">
             {/* Features and Evaluation Section */}
-            <div className="flex-1 lg:mb-0 mb-8 ">
-              <div className="flex flex-col md:flex-row justify-between mb-8 space-y-6 md:space-y-0">
+            <div className="flex-1 mb-8 lg:mb-0 ">
+              <div className="flex flex-col justify-between mb-8 space-y-6 md:flex-row md:space-y-0">
                 {/* Features Section */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-white p-4 rounded-lg">
+                <div className="grid grid-cols-1 gap-6 p-4 bg-white rounded-lg sm:grid-cols-2">
                   
                   {wifi && <Feature icon={<BsWifi size={24} />} title="Wi-Fi" description={wifi} />}
                   {wellness && <Feature icon={<GiPoolDive size={24} />} title="Wellness" description={wellness} />}
@@ -75,9 +84,9 @@ const ReservationCard = ({ data }) => {
                 </div>
 
                 {/* Evaluation Section */}
-                <div className="flex flex-col items-center flex-shrink-0 w-full md:w-1/3 bg-white p-4 rounded-lg">
-                  <h1 className="font-bold text-lg mb-2">Evaluation</h1>
-                  <h2 className="font-bold text-4xl mb-2">5.0</h2>
+                <div className="flex flex-col items-center flex-shrink-0 w-full p-4 bg-white rounded-lg md:w-1/3">
+                  <h1 className="mb-2 text-lg font-bold">Evaluation</h1>
+                  <h2 className="mb-2 text-4xl font-bold">5.0</h2>
                   <div className="flex mb-2">
                     <BsStarFill size={24} color="#00FF00" />
                     <BsStarFill size={24} color="#00FF00" />
@@ -144,6 +153,12 @@ const ReservationCard = ({ data }) => {
                 <p className="mt-2 text-sm text-center">You won't be charged yet</p>
               )}
             </div>
+            <button 
+                className="w-full py-2 font-bold text-white bg-green-500 rounded-lg"
+                onClick={togglePopup}
+              >
+                message
+              </button>
           </div>
 
           {/* Pricing Breakdown */}
@@ -178,13 +193,36 @@ const ReservationCard = ({ data }) => {
           </div>
         </div>
       </div>
+          {/* Popup */}
+          {showPopup && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="w-full max-w-md p-6 bg-white rounded-lg" style={{ maxHeight: '600px', overflowY: 'auto' }}>
+                <h2 className="mb-4 text-xl font-bold">
+                  {isEditing ? "Edit Billing Address" : "Add Billing Address"}
+                </h2>
+                <form className="space-y-4 " >
+                
+            <ChatUI userR={userR}/>
+               
+               
+               
+                <div className="flex justify-end">
+                  <button type="button" className="px-4 py-2 text-gray-500 bg-gray-200 rounded-md hover:bg-gray-300" onClick={togglePopup}>
+                    Cancel
+                  </button>
+                  
+                </div>
+              </form>
+              </div>
+            </div>
+          )}
     </div>
   );
 };
 
 const Feature = ({ icon, title, description }) => (
   <div className="flex items-center p-4 space-x-4">
-    <div className="p-2 rounded-full bg-gray-100">{icon}</div>
+    <div className="p-2 bg-gray-100 rounded-full">{icon}</div>
     <div>
       <h1 className="font-bold">{title}</h1>
       <p className="text-sm text-gray-600">{description}</p>

@@ -2,15 +2,19 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import authRoutes from './Routes/auth.js'
-import adminRouter from './Routes/adminRoutes.js';
-import userRoutes from "./Routes/user.js"; 
 import cors from "cors";
-import passport from './Controllers/passport.js'
+import passport from './Controllers/passport.js';
 import session from 'express-session';
-import HostRoutes from './Routes/hostRoutes.js'
-import InvoiceRoutes from './Routes/invoiceRoutes.js'
-import accommodationRoutes from './Routes/AccommodationRoutes.js'
+import { Server } from "socket.io";
+import http from 'http';
+import authRoutes from './Routes/auth.js';
+import adminRouter from './Routes/adminRoutes.js';
+import userRoutes from "./Routes/user.js";
+import HostRoutes from './Routes/hostRoutes.js';
+import InvoiceRoutes from './Routes/invoiceRoutes.js';
+import accommodationRoutes from './Routes/AccommodationRoutes.js';
+import messageRoutes from './Routes/message.js';
+import Message from './models/messageModel.js';  // Import the Message model
 import reviewRoutes from './Routes/ReviewRoutes.js'
 
 dotenv.config();
@@ -18,6 +22,18 @@ dotenv.config();
 const app = express();
 const Port = process.env.Port || 8000;
 
+// Create the HTTP server
+const server = http.createServer(app);
+
+// Initialize Socket.IO with the HTTP server
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000", // Frontend origin
+    credentials: true,
+  },
+});
+
+// Session and passport configuration
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -26,14 +42,6 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-const corsOptions = {
-  origin: true,
-};
-
-app.get("/", (req, res) => {
-  res.send("API is working");
-});
 
 // Database connection
 mongoose.set("strictQuery", false);
@@ -49,17 +57,47 @@ const connectDB = async () => {
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors(corsOptions));
+app.use(cors({ origin: true }));
+
+// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRouter);
 app.use('/api', HostRoutes);
 app.use('/api', InvoiceRoutes);
 app.use('/api', accommodationRoutes);
+app.use('/api', messageRoutes);
 app.use("/api/reviews", reviewRoutes);
 
+// Socket.IO connection
+io.on('connection', (socket) => {
+  console.log('A user connected:', socket.id);
 
-app.listen(Port, () => {
+  // Listen for 'send_message' event from clients
+  socket.on('send_message', async (msg) => {
+    try {
+      // Save the message to the database
+      const newMessage = new Message({
+        message: msg.message,
+        sender: msg.sender,
+        users: msg.users,
+      });
+      // await newMessage.save();
+
+      // Emit the message to all clients
+      io.emit('receive_message', newMessage);
+    } catch (error) {
+      console.error('Error saving message to database:', error);
+    }
+  });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+  });
+});
+
+// Start the server using `server.listen`
+server.listen(Port, () => {
   connectDB();
   console.log("Server is running on port " + Port);
 });

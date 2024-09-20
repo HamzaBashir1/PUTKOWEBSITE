@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
 import { BiPlus } from "react-icons/bi";
 import { BsPersonCircle } from "react-icons/bs";
@@ -17,6 +17,15 @@ const getFirstDayOfMonth = (year, month) => {
   return new Date(year, month, 1).getDay();
 };
 
+// Helper function to check if a date is within any of the date ranges from the database
+const isDateInRange = (date, dateRanges) => {
+  return dateRanges.some((range) => {
+    const start = new Date(range.startDate);
+    const end = new Date(range.endDate);
+    return date >= start && date <= end;
+  });
+};
+
 // Calendar component
 const Calendar = ({ year, months }) => {
   const [startDate, setStartDate] = useState(null);
@@ -24,11 +33,35 @@ const Calendar = ({ year, months }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [hoveredDate, setHoveredDate] = useState(null); // New state for hovered date
   const [showForm, setShowForm] = useState(false);
+  const [occupancyDates, setOccupancyDates] = useState([]); // Store occupancy data from the database
 
+  const { user } = useContext(AuthContext);
+
+  // Fetch occupancy dates from the server
+  useEffect(() => {
+    const fetchOccupancyDates = async () => {
+      const userId = user?._id;
+      if (!userId) return;
+
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/accommodation/user/${userId}`
+        );
+        const result = await response.json();
+        console.log("Fetched occupancy dates:", result);
+
+        // Assuming result contains the occupancyCalendar array
+        setOccupancyDates(result);
+      } catch (error) {
+        console.error("Error fetching occupancy dates:", error);
+      }
+    };
+
+    fetchOccupancyDates();
+  }, [user]);
+
+  // Helper function to handle date change from the date picker
   const handleDateChange = (start, end) => {
-    console.log("Start Date:", start);
-    console.log("End Date:", end);
-
     setStartDate(start);
     setEndDate(end);
     setShowDatePicker(false);
@@ -36,36 +69,25 @@ const Calendar = ({ year, months }) => {
     // Automatically show the form when both dates are selected
     if (start && end) {
       setShowForm(true);
-      console.log("Form should be visible now");
     }
   };
 
-  const isDateInRange = (date) => {
-    if (!startDate || !endDate) return false;
-    return date >= startDate && date <= endDate;
-  };
-
+  // Determine if a date is being hovered
   const isDateHovered = (date) => {
     if (!hoveredDate) return false;
     return date.toDateString() === hoveredDate.toDateString();
   };
 
+  // Close the form
   const closeForm = () => {
-    setShowForm(false); // Close the form and show the original content
-    console.log("Form closed");
+    setShowForm(false);
   };
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const { user } = useContext(AuthContext);
 
   // Render the form if showForm is true
   if (showForm) {
     return (
       <div className="py-4">
-        <button className="text-gray-600 text-2xl" onClick={closeForm}>
+        <button className="text-2xl text-gray-600" onClick={closeForm}>
           Close Form
         </button>
         <AccommodationForm startDate={startDate} endDate={endDate} />
@@ -78,7 +100,6 @@ const Calendar = ({ year, months }) => {
       {/* Navbar */}
       <div className="p-4 mb-6 bg-white rounded-lg shadow-md">
         <div className="flex flex-col gap-4 mb-4 md:flex-row md:justify-between">
-          {/* Left Section: Title and Status */}
           <div className="flex flex-col">
             <h1 className="text-[#292A34] font-bold text-xl md:text-2xl">
               Occupancy calendar
@@ -87,14 +108,12 @@ const Calendar = ({ year, months }) => {
               Apartment Košice
             </p>
           </div>
-
-          {/* Center Section: Add Accommodation Button */}
           <div
-            className="hidden md:flex md:flex-row md:items-center gap-4 cursor-pointer"
-            onClick={toggleMenu}
+            className="hidden gap-4 cursor-pointer md:flex md:flex-row md:items-center"
+            onClick={() => setShowForm(true)}
           >
             <CiSearch className="text-xl text-gray-500" />
-            <button className="flex items-center bg-white text-black border border-gray-300 px-4 py-2 rounded-lg space-x-2 hover:bg-gray-100">
+            <button className="flex items-center px-4 py-2 space-x-2 text-black bg-white border border-gray-300 rounded-lg hover:bg-gray-100">
               <BiPlus className="text-lg" />
               <span>Add Accommodation</span>
             </button>
@@ -103,7 +122,7 @@ const Calendar = ({ year, months }) => {
                 <img
                   src={user?.photo}
                   alt="User Profile"
-                  className="w-8 h-8 rounded-full object-cover"
+                  className="object-cover w-8 h-8 rounded-full"
                 />
               ) : (
                 <BsPersonCircle className="text-[#292A34] text-xl" />
@@ -112,20 +131,8 @@ const Calendar = ({ year, months }) => {
             </div>
           </div>
         </div>
-
-        {/* Button Container for Add Your Own Date */}
-        <div className="flex justify-end">
-          <button
-            className="flex items-center bg-red-500 text-white rounded-full px-4 py-2 space-x-2 hover:bg-red-600"
-            onClick={() => setShowForm(true)}
-          >
-            <BiPlus className="text-lg" />
-            <span className="sm:block hidden">Add Your Own Date</span>
-          </button>
-        </div>
       </div>
 
-      {/* Date Range Picker */}
       {showDatePicker && (
         <DateRangePicker
           startDate={startDate}
@@ -150,7 +157,6 @@ const Calendar = ({ year, months }) => {
 
               {/* Calendar grid */}
               <div className="grid grid-cols-7 gap-2 text-center">
-                {/* Days of the week */}
                 {["MON", "TUES", "WED", "THUR", "FRI", "SAT", "SUN"].map(
                   (day) => (
                     <div key={day} className="text-sm text-gray-500">
@@ -168,7 +174,11 @@ const Calendar = ({ year, months }) => {
                 {[...Array(daysInMonth)].map((_, i) => {
                   const date = i + 1;
                   const currentDate = new Date(year, monthIndex, date);
-                  const isInRange = isDateInRange(currentDate);
+
+                  // Check if the current date is within any occupancy range
+                  const isInRange = occupancyDates.some((occupancy) =>
+                    isDateInRange(currentDate, occupancy.occupancyCalendar || [])
+                  );
                   const isHovered = isDateHovered(currentDate);
 
                   return (
@@ -176,8 +186,8 @@ const Calendar = ({ year, months }) => {
                       key={i}
                       className={`p-2 text-sm rounded cursor-pointer transition-colors duration-200 ${
                         isHovered ? "bg-blue-200" : ""
-                      } ${isInRange ? "bg-pink-300" : ""} ${
-                        i % 7 === 5 || i % 7 === 6 ? "bg-[#FF1D5340]" : ""
+                      } ${isInRange ? "bg-green-300" : ""} ${
+                        i % 7 === 5 || i % 7 === 6 ? "" : ""
                       }`}
                       onClick={() => {
                         if (!startDate) {
@@ -185,7 +195,7 @@ const Calendar = ({ year, months }) => {
                         } else if (!endDate) {
                           setEndDate(currentDate);
                           setShowDatePicker(false);
-                          handleDateChange(startDate, currentDate); // Trigger the handleDateChange after setting endDate
+                          handleDateChange(startDate, currentDate);
                         } else {
                           setStartDate(currentDate);
                           setEndDate(null);
