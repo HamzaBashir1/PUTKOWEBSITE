@@ -10,12 +10,12 @@ import CardSection from "./components/CardSection";
 import Location from "./components/location/Location";
 import Section from "./components/Section";
 import FeatureSection from './components/FeatureSection'
+import Footer from "./components/Footer/Footer";
 
 
 export default function Home() {
   return (
     <main>
-      
       <Hero/>
       <Categories/>
       <CardSection/>
@@ -24,6 +24,7 @@ export default function Home() {
       <FeatureSection/>
       <Work />
       <Email />
+      <Footer/>
     </main>
   );
 }

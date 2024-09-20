@@ -103,7 +103,7 @@ const RatingComponent = () => {
           <hr/>
 
         {/* No Ratings Message */}
-        <div className="flex flex-col justify-center py-5 px-5 sm:mx-5 mb-5 text-center items-center">
+        <div className="flex flex-col justify-center py-5 px-5 sm:mx-5 mb-5 text-center items-center pb-[500px]">
           <div>
             <h2 className="text-xl font-semibold mb-2">You have no ratings yet</h2>
             <p className="text-gray-500 max-w-xl">

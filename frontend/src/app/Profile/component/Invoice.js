@@ -16,7 +16,7 @@ const Invoice = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 min-h-screen">
       {/* Invoice Header Section */}
       <div className="p-4 mb-6 bg-white rounded-lg shadow-md">
         <div className="flex flex-col gap-4 mb-4 md:flex-row md:justify-between items-start md:items-center">

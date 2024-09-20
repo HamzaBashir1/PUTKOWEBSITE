@@ -15,7 +15,7 @@ const News = () => {
 
   return (
     <>
-      <div>
+      <div  className="">
         <div className="p-4 mb-6 bg-white rounded-lg shadow-md">
           <div className="flex flex-col gap-4 mb-4 md:flex-row md:justify-between">
             {/* Left Section: Title and Status */}
@@ -79,7 +79,7 @@ const News = () => {
         </div>
       </div>
 
-      <div className="flex flex-col justify-center py-5 px-5 sm:mx-5 mb-5 text-center items-center">
+      <div className="flex flex-col justify-center py-5 px-5 sm:mx-5 mb-5 text-center items-center pb-[550px]">
         <div>
           <h2 className="text-xl font-semibold mb-2">You have no messages yet</h2>
           <p className="text-gray-500 max-w-xl text-center">

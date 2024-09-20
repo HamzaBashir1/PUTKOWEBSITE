@@ -13,7 +13,7 @@ const AdditionalServices = () => {
   
   return (
     <div>
-      <div className="min-h-screen p-6 bg-gray-50">
+      <div className="min-h-screen ">
        {/* Header */}
        <div className="p-4 mb-6 bg-white rounded-lg shadow-md">
        <div className="flex flex-col gap-4 mb-4 md:flex-row md:justify-between">

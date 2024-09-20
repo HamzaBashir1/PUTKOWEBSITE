@@ -41,7 +41,7 @@ const WaterBodies = () => {
               className='rounded-lg'
               width={100}
               height={75}
-              layout='intrinsic'
+              // layout='intrinsic'
             />
             <div className='flex flex-col'>
               <h1 className='text-[#292A34] text-lg font-semibold'>{location.name}</h1>
@@ -65,7 +65,7 @@ const WaterBodies = () => {
                 className='rounded-lg'
                 width={100}
                 height={75}
-                layout='intrinsic'
+                // layout='intrinsic'
               />
               <div className='flex flex-col'>
                 <h1 className='text-[#292A34] text-lg font-semibold'>{location.name}</h1>

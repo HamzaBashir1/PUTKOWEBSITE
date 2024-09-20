@@ -25,7 +25,7 @@ const LastMinute = () => {
     };
 
     return (
-        <div className="p-4 md:p-8 lg:p-10 xl:p-12 bg-white rounded-lg shadow-md">
+        <div className="p-4 md:p-8 lg:p-10 xl:p-12 min-h-screen">
             <div className="flex flex-col gap-4 md:flex-row md:justify-between mb-6">
                 {/* Left Section: Title and Status */}
                 <div className="flex flex-col">
@@ -58,7 +58,7 @@ const LastMinute = () => {
             </div>
 
             <div className="mx-auto max-w-5xl gap-10">
-                <div className="p-5 bg-gray-400 mb-10 flex flex-row items-center gap-5">
+                <div className="p-5 bg-white mb-10 flex flex-row items-center gap-5">
                     <h1 className="font-semibold text-lg">1/2</h1>
                     <span>Last minute</span> 
                     <AiOutlineQuestionCircle className="text-gray-500" />
@@ -70,7 +70,7 @@ const LastMinute = () => {
                     placeholder="Enter details..."
                 />
 
-                <div className="p-5 bg-gray-400 mb-10 flex flex-row items-center gap-5">
+                <div className="p-5 bg-white mb-10 flex flex-row items-center gap-5">
                     <h1 className="font-semibold text-lg ">2/2  </h1>
                     <span>When the offer will be displayed on the website</span>
                     <AiOutlineQuestionCircle className="text-gray-500" />
