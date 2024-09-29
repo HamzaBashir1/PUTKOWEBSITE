@@ -19,6 +19,7 @@ import Accommodation from '../component/Accommodation';
 import Loading from "../../components/Loader/Loading.js"
 import Error from "../../components/Error/Error.js"
 import Footer from "../../components/Footer/Footer.js"
+import { Base_URL } from "../../config"
 
 const Page = ({ params }) => {
     const [accommodationData, setAccommodationData] = useState();
@@ -28,7 +29,7 @@ const Page = ({ params }) => {
     useEffect(() => {
         const fetchAccommodationData = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/accommodation/${params.details}`);
+                const response = await fetch(`${Base_URL}/accommodation/${params.details}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }

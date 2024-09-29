@@ -29,7 +29,7 @@ const PropertyCard = () => {
 
     const fetchReviews = async (accommodationId) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/reviews/${accommodationId}`);
+            const response = await fetch(`${Base_URL}/reviews/${accommodationId}`);
             const result = await response.json();
 
             if (result.success && result.data.length > 0) {

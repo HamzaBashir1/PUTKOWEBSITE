@@ -6,6 +6,7 @@ import { BsPersonCircle } from "react-icons/bs";
 import DateRangePicker from "./DateRangePicker";
 import { AuthContext } from "../../context/AuthContext";
 import AccommodationForm from "./AccommodationForm";
+import { Base_URL } from "../../config"
 
 // Helper function to get the number of days in a month
 const getDaysInMonth = (year, month) => {
@@ -45,7 +46,7 @@ const Calendar = ({ year, months }) => {
 
       try {
         const response = await fetch(
-          `http://localhost:5000/api/accommodation/user/${userId}`
+          `${Base_URL}/accommodation/user/${userId}`
         );
         const result = await response.json();
         console.log("Fetched occupancy dates:", result);

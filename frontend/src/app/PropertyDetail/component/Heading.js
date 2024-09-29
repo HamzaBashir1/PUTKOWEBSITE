@@ -4,7 +4,8 @@ import Image from 'next/image';
 import { BsBox, BsPersonBadgeFill, BsStar } from 'react-icons/bs';
 import { MdVerified } from 'react-icons/md';
 import { BiHeart, BiUpload } from 'react-icons/bi';
-import map from '../../../../public/map.png'; // Adjust the path if necessary
+import map from '../../../../public/map.png';
+import { Base_URL } from "../../config"
 
 
 
@@ -28,7 +29,7 @@ const Heading = ({ data }) => {
 
       const fetchReviews = async (accommodationId) => {
         try {
-          const response = await fetch(`http://localhost:5000/api/reviews/${accommodationId}`);
+          const response = await fetch(`${Base_URL}/reviews/${accommodationId}`);
           const result = await response.json();
     
           if (result.success && result.data.length > 0) {

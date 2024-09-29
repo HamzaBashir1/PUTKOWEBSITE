@@ -7,6 +7,7 @@ import { CiSearch } from 'react-icons/ci';
 import { BiFilter } from 'react-icons/bi';
 import { BsArrowDown } from 'react-icons/bs';
 import { AuthContext } from "../../context/AuthContext";
+import { Base_URL } from "../../config"
 
 const RatingComponent = () => {
   const [accommodations, setAccommodations] = useState([]); // Initialize with an empty array
@@ -26,7 +27,7 @@ const RatingComponent = () => {
 
       const fetchAccommodations = async () => {
         try {
-          const response = await fetch(`http://localhost:5000/api/accommodation/user/${userId}`, {
+          const response = await fetch(`${Base_URL}/accommodation/user/${userId}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -53,7 +54,7 @@ const RatingComponent = () => {
   // Fetch reviews when an accommodation is selected
   const fetchReviews = async (accommodationId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/reviews/${accommodationId}`);
+      const response = await fetch(`${Base_URL}/reviews/${accommodationId}`);
       const result = await response.json();
 
       if (result.success && result.data.length > 0) {

@@ -4,6 +4,7 @@ import { BsPersonCircle } from 'react-icons/bs';
 import { AuthContext } from "../../context/AuthContext";
 import TabNavigation from './TabNavigation'; // Assuming you want to display this after clicking 'Process'
 import AccommodationForm from "./AccommodationForm";
+import { Base_URL } from "../../config"
 
 const Reservation = () => {
   const { user } = useContext(AuthContext);
@@ -37,7 +38,7 @@ const Reservation = () => {
 
       const fetchReservations = async () => {
         try {
-          const response = await fetch(`http://localhost:5000/api/reservation/provider/${userId}`, {
+          const response = await fetch(`${Base_URL}/reservation/provider/${userId}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',

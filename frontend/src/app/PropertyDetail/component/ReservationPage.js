@@ -1,5 +1,5 @@
 "use client"
-import { Base_URL } from "../../config.js";
+import { Base_URL } from "../../config";
 import React, { useState, useEffect } from "react";
 import { BsArrowRight, BsStarFill } from "react-icons/bs";
 import { GiTick } from "react-icons/gi";
@@ -70,7 +70,7 @@ const send_email = async () => {
   const congrats_message = `Hello ${reservation.name},\n\nrequest send! Your reservation for ${AccommodationName} has been received. We look forward to your stay from ${ checkInDate} to ${ checkOutDate}.\n\nBest regards,\nYour Team`;
 
   try {
-    const response = await fetch("http://localhost:5000/api/send", {
+    const response = await fetch(`${Base_URL}/send`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

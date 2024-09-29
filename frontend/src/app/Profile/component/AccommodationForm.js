@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { toast } from 'react-toastify';
+import { Base_URL } from "../../config"
 
 const AccommodationForm = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [accommodations, setAccommodations] = useState([{}]);
   const [selectedAccommodation, setSelectedAccommodation] = useState('');
-  // const [note, setNote] = useState('');
+  const [note, setNote] = useState('');
 
   const onDateChange = (dates) => {
     const [start, end] = dates;
@@ -34,7 +35,7 @@ const AccommodationForm = () => {
       // Fetch accommodation data for the specific user
       const fetchAccommodations = async () => {
         try {
-          const response = await fetch(`http://localhost:5000/api/accommodation/user/${userId}`, {
+          const response = await fetch(`${Base_URL}/accommodation/user/${userId}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -78,7 +79,7 @@ console.log("acc",selectedAccommodationId)
       };
 
       try {
-        const response = await fetch(`http://localhost:5000/api/accommodation/${selectedAccommodationId}`, {
+        const response = await fetch(`${Base_URL}/accommodation/${selectedAccommodationId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

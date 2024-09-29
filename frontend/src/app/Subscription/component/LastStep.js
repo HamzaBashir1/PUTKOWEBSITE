@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { BiPlus } from "react-icons/bi";
 import { FormContext } from "../../FormContext";
 import { toast } from "react-toastify";
+import { Base_URL } from "../../config"
 // import { console } from "inspector";
 // import axios from 'axios';
 
@@ -161,7 +162,7 @@ console.log(users._id)
       setError("Please fill in all required billing data.");
     }
     try {
-      const res = await fetch(`http://localhost:5000/api/hosts`, {
+      const res = await fetch(`${Base_URL}/hosts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

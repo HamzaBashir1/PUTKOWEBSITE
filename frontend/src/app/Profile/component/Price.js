@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { Base_URL } from "../../config"
 
 const Price = ({ priceDetails }) => {
   console.log("Price Details: ", priceDetails);
@@ -18,7 +19,7 @@ const Price = ({ priceDetails }) => {
   // Email sending function
   const sendEmail = async (customMessage) => {
     try {
-      const response = await fetch("http://localhost:5000/api/send", {
+      const response = await fetch(`${Base_URL}/send`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -42,7 +43,7 @@ const Price = ({ priceDetails }) => {
   const updateReservationByName = async (name, status, emailMessage) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/reservation/name/${name}`,
+        `${Base_URL}/reservation/name/${name}`,
         {
           method: "PUT",
           headers: {
