@@ -72,9 +72,10 @@ function Synchronization() {
       if (!response.ok) {
         throw new Error('Failed to update accommodation');
       }
-
+    alert("Accommodation updated successfully ")
       console.log('Accommodation updated successfully');
     } catch (error) {
+      alert("Accommodation not updated  ")
       console.error('Error updating accommodation:', error);
     }
   };

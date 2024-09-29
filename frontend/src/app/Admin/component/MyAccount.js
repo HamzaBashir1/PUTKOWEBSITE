@@ -7,6 +7,8 @@ import { toast } from 'react-toastify';
 import { AuthContext, useAuth } from "../../context/AuthContext";
 import Hosts from "./Hosts"
 import { Base_URL } from "../../config";
+import Email from "../component/Email"
+import Reservation from "./Reservation";
 
 const MyAccount = () => {
     const [tab, setTab] = useState("bookings");
@@ -124,10 +126,28 @@ const MyAccount = () => {
                             >
                                 Hosts Collection
                             </button>
+                            <button
+                                onClick={() => setTab("email")}
+                                className={`${
+                                    tab === "email" ? "bg-blue-500 text-white font-normal" : ""
+                                } p-2 mr-5 px-5 rounded-md text-headingColor font-semibold text-[16px] leading-7 border border-solid border-primaryColor`}
+                            >
+                                Email Subscribe
+                            </button>
+                            <button
+                                onClick={() => setTab("reservation")}
+                                className={`${
+                                    tab === "reservation" ? "bg-blue-500 text-white font-normal" : ""
+                                } p-2 mr-5 px-5 rounded-md text-headingColor font-semibold text-[16px] leading-7 border border-solid border-primaryColor`}
+                            >
+                                Reservation
+                            </button>
                         </div>
                         {tab === "users" && <Users />}
                         {tab === "accommodation" && <Accommodation />}
                         {tab === "hosts" && <Hosts />}
+                        {tab === "email" && <Email/>}
+                        {tab === "reservation" && <Reservation/>}
                     </div>
                 </div>
             </div>

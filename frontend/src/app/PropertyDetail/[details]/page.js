@@ -66,7 +66,7 @@ const Page = ({ params }) => {
                 <Information data={accommodationData} />
                 <Location data={accommodationData} />
                 <Persons data={accommodationData} />
-                <Accommodation data={accommodationData} />
+                {/* <Accommodation data={accommodationData} /> */}
                 <Diet data={accommodationData} />
                 <Overlook data={accommodationData} />
                 <Ratings userId={accommodationData?.userId} 

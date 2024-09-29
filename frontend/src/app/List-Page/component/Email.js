@@ -1,6 +1,31 @@
-import React from 'react';
+"use client";
+import React, { useState } from 'react';
+import axios from 'axios';  
+import { Base_URL } from "../../config.js";  
+import { toast } from 'react-toastify';
 
 const Email = () => {
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubscribe = async () => {
+    try {
+      // Make the POST request using axios
+      const response = await axios.post(`${Base_URL}/subscribe`, { email });
+      setMessage(response.data.message);  // Set success message
+      toast.success("Email subscribed successfully");  // Display success toast
+      setError('');  // Clear any previous errors
+      setEmail('');  // Reset the email input
+    } catch (err) {
+      // Handle the error response
+      const errorMessage = err.response?.data?.error || 'An error occurred';
+      setError(errorMessage);  // Set error message
+      toast.error(errorMessage);  // Display error toast
+      setMessage('');  // Clear success message
+    }
+  };
+
   return (
     <div className="relative w-full h-[400px] md:h-[400px] lg:h-[400px] mb-10">
       {/* Black overlay */}
@@ -25,14 +50,21 @@ const Email = () => {
           <input 
             placeholder='Enter your email' 
             className='bg-white rounded-lg py-2 px-4 mb-2 sm:mb-0 sm:mr-2 w-full sm:w-auto'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
-          <button className='rounded-lg bg-[#4FBE9F] py-2 px-4 text-white w-full sm:w-auto'>
+          <button className='rounded-lg bg-[#4FBE9F] py-2 px-4 text-white w-full sm:w-auto'
+          onClick={handleSubscribe} 
+          >
             Subscribe
           </button>
         </div>
         <p className='text-white text-xs mt-2'>
           We care about your data in our <span className='underline'>privacy policy</span>
         </p>
+        {/* Show success or error message */}
+        {message && <p className="text-green-500 mt-2">{message}</p>}  {/* Success message */}
+        {error && <p className="text-red-500 mt-2">{error}</p>}  {/* Error message */}
       </div>
     </div>
   );

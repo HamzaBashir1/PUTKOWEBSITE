@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { toast } from 'react-toastify';
 
 const AccommodationForm = () => {
   const [startDate, setStartDate] = useState(null);
@@ -95,9 +96,11 @@ console.log("acc",selectedAccommodationId)
 
         const result = await response.json();
         console.log('Successfully updated:', result);
+        toast.success("calender updated successfully!");
         alert('calender updated successfully!');
       } catch (error) {
         console.error('Error updating accommodation:', error);
+        toast.error("Failed to update accommodation.");
         alert('Failed to update accommodation.');
       }
     }

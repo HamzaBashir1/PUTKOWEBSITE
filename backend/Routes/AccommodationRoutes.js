@@ -7,10 +7,14 @@ import {
   updateAccommodation,
   deleteAccommodation,
   updateAccommodationByAccommodationId,
-  getUserAccommodations
+  getUserAccommodations,
+  searchAccommodationsByCategory
 } from '../Controllers/AccommodationController.js';
 
 const router = express.Router();
+
+// Search accommodations by category (this should be first)
+router.get("/accommodation/search", searchAccommodationsByCategory);
 
 // Protected routes (require authentication)
 router.post("/accommodation", createAccommodation);

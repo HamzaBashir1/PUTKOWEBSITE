@@ -55,9 +55,16 @@ const ChatUI = ({ userR }) => {
     const u = localStorage.getItem("user");
     const s = JSON.parse(u);
     const i = s._id;
-      
-    console.log("sender",i,"revicer",userR)
-    
+  
+    // Check if senderId and receiverId (userR) are the same
+    if (i === userR) {
+      console.log("Cannot fetch messages for the same user.");
+      setMessages([]); // Clear the messages state if the IDs are the same
+      return; // Exit the function early
+    }
+  
+    console.log("sender", i, "receiver", userR);
+  
     try {
       const res = await fetch(`${Base_URL}/getmsg?userId1=${i}&userId2=${userR}`, {
         method: "GET",
@@ -66,15 +73,30 @@ const ChatUI = ({ userR }) => {
         },
       });
       const data = await res.json();
-      console.log("data",data)
-      setMessages(data.messages);
+      console.log("data", data);
+      
+      // Adjust the filter to check if both user IDs are included in the 'users' array of each message
+      const filteredMessages = data.messages.filter((message) => {
+        return message.users.includes(i) && message.users.includes(userR);
+      });
+  
+      console.log("filtered", filteredMessages);
+      setMessages(filteredMessages);
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
   };
-
+  
   // Handle sending the message
   const handleSendMessage = async () => {
+     // Check if senderId and userR are the same
+  if (senderId === userR) {
+    console.log("Cannot send message to yourself.");
+    // Optionally, you can show an alert instead of console.log
+    alert("You cannot send a message to yourself.");
+    return; // Exit the function early
+  }
+
     console.log("s",senderId,"r",userR)
     if (inputMessage.trim()) {
       const newMessage = {
@@ -152,21 +174,34 @@ const ChatUI = ({ userR }) => {
   return (
     <div className="flex flex-col h-screen bg-gray-100">
       <div className="flex-1 p-4 overflow-y-auto" ref={chatContainerRef}>
-      {messages && messages.length > 0 ? (
-        messages.map((message, index) => (
-          <div key={index} className={`flex ${message.sender === senderId ? "justify-end" : "justify-start"} mb-4`}>
-            <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${message.sender === senderId ? "bg-blue-500 text-white" : "bg-white"}`}>
-              <p className="mb-1">{message.message}</p>
-              <p className="text-xs text-gray-400">
-                {new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-              </p>
+        {messages && messages.length > 0 ? (
+          messages.map((message, index) => (
+            <div
+              key={index}
+              className={`flex ${
+                message.sender === senderId ? "justify-end" : "justify-start"
+              } mb-4`}
+            >
+              <div
+                className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                  message.sender === senderId
+                    ? "bg-blue-500 text-white"
+                    : "bg-white"
+                }`}
+              >
+                <p className="mb-1">{message.message}</p>
+                <p className="text-xs text-gray-400">
+                  {new Date().toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </p>
+              </div>
             </div>
-          </div>
-        ))
-      ) : (
-        <p>No messages to display</p>
-      )}
-      
+          ))
+        ) : (
+          <p>No messages to display</p>
+        )}
       </div>
       <div className="px-4 py-4 bg-white border-t border-gray-200 sm:px-6">
         <div className="flex space-x-3">
@@ -204,6 +239,8 @@ const ChatUI = ({ userR }) => {
       </div>
     </div>
   );
+  
+  
 };
 
 export default ChatUI;

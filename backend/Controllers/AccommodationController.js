@@ -119,3 +119,30 @@ export const deleteAccommodation = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// Search accommodations by property type
+// Search accommodations by property type
+export const searchAccommodationsByCategory = async (req, res) => {
+  try {
+    const { category } = req.query; // Get the category from the query parameters
+    let filters = {};
+
+    // Check if category is provided and create filters accordingly
+    if (category) {
+      filters.propertyType = category; // Set the property type filter
+    }
+
+    // Fetch accommodations that match the filters
+    const accommodations = await Accommodation.find(filters).populate('userId', 'name email'); // Optionally populate user info
+
+    // Check if any accommodations were found
+    if (accommodations.length === 0) {
+      return res.status(404).json({ message: "No accommodations found for the selected category." });
+    }
+
+    res.status(200).json(accommodations); // Return the filtered accommodations
+  } catch (error) {
+    console.error(error); // Log the error for more detail
+    res.status(500).json({ error: 'Failed to fetch accommodations' });
+  }
+};

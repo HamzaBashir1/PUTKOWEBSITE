@@ -11,6 +11,9 @@ const AddAccommodation = () => {
   const [name, setName] = useState(""); 
   const [description, setDescription] = useState(""); 
   const [price, setPrice] = useState(""); 
+  const [bedroomCount , setBedroomCount] = useState("");
+  const [bathroomCount , setBathroomCount] = useState("");
+  const [person, setPerson] = useState("");
   const [discount, setDiscount] = useState(""); 
   const [street, setStreet] = useState('');
   const [city, setCity] = useState('');
@@ -64,8 +67,8 @@ const AddAccommodation = () => {
   const [loudMusic, setLoudMusic] = useState('');
   const [smoking, setSmoking] = useState('');
   const [parking, setParking] = useState('');
-
-
+  const [userId , setuser] = useState('');
+  const [url , seturl] = useState('');
   const processes = [
     'Reception',
     'Reception 24/7',
@@ -274,6 +277,12 @@ const AddAccommodation = () => {
 
   const handleSubmit = async (event) => {
     console.log("starting point")
+    const userr = localStorage.getItem("user");
+    const users = JSON.parse(userr);
+    seturl(" ");
+    console.log("user",users._id)
+    setuser(users._id);
+    console.log("userid",userId)
     event.preventDefault();
     console.log("starting point2")
     console.log('Selected propertyType:', propertyType);
@@ -282,8 +291,13 @@ const AddAccommodation = () => {
     const accommodationData = {
       propertyType,
       name,
+      userId,
+      url,
       description,
       price,
+      bedroomCount,
+      bathroomCount,
+      person,
       discount,
       location: {
         address,
@@ -363,6 +377,7 @@ const AddAccommodation = () => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           className='w-full p-2 mt-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500'
+          required
         />
       </div>
 
@@ -375,6 +390,7 @@ const AddAccommodation = () => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           className='w-full p-2 mt-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500'
+          required
         />
       </div>
 
@@ -392,6 +408,7 @@ const AddAccommodation = () => {
                 checked={propertyType === type}
                 onChange={(e) => setPropertyType(e.target.value)}
                 className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 '
+                required
               />
               <label
                 htmlFor={`property-type-${index}`}
@@ -404,6 +421,48 @@ const AddAccommodation = () => {
         </div>
       </div>
 
+      <div className="p-5 mb-4 bg-white">
+        <h1 className="mb-2 text-lg font-bold">Total Number of Bedroom</h1>
+        <div className="relative">
+          <input
+            type="number"
+            value={bedroomCount}
+            onChange={(e) => setBedroomCount(e.target.value)}
+            className="w-full p-2 pl-3 pr-12 border border-gray-300 rounded-md"
+            placeholder="Enter number of bedrooms"
+            required
+          />
+        </div>
+      </div>
+
+      <div className="p-5 mb-4 bg-white">
+        <h1 className="mb-2 text-lg font-bold">Total Number of Bathroom</h1>
+        <div className="relative">
+          <input
+            type="number"
+            value={bathroomCount}
+            onChange={(e) => setBathroomCount(e.target.value)}
+            className="w-full p-2 pl-3 pr-12 border border-gray-300 rounded-md"
+            placeholder="Enter number of bathrooms"
+            required
+          />
+        </div>
+      </div>
+
+
+      <div className="p-5 mb-4 bg-white">
+        <h1 className="mb-2 text-lg font-bold">maximum number of Person</h1>
+        <div className="relative">
+          <input
+            type="number"
+            value={person}
+            onChange={(e) => setPerson(e.target.value)}
+            className="w-full p-2 pl-3 pr-12 border border-gray-300 rounded-md"
+            placeholder="Enter number of bathrooms"
+            required
+          />
+        </div>
+      </div>
 
       {/* Price */}
         <div className="p-5 mb-4 bg-white ">
@@ -415,6 +474,7 @@ const AddAccommodation = () => {
                 onChange={(e) => setPrice(e.target.value)}
                 className="w-full p-2 pl-3 pr-12 border border-gray-300 rounded-md"
                 placeholder="Enter price"
+                required
                 />
                 <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">
                 €
@@ -432,6 +492,7 @@ const AddAccommodation = () => {
                 onChange={(e) => setDiscount(e.target.value)}
                 className="w-full p-2 pl-3 pr-12 border border-gray-300 rounded-md"
                 placeholder="Enter discount amount"
+                required
                 />
             </div>
         </div>
@@ -449,6 +510,7 @@ const AddAccommodation = () => {
               onChange={(e) => setAddress(e.target.value)}
               placeholder='Enter Address'
               className='w-full p-2 mt-1 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500'
+              required
             />
           </div>
           <div>
@@ -459,6 +521,7 @@ const AddAccommodation = () => {
               onChange={(e) => setLatitude(e.target.value)}
               placeholder='Enter Latitude'
               className='w-full p-2 mt-1 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500'
+              required
             />
           </div>
           <div>
@@ -469,6 +532,7 @@ const AddAccommodation = () => {
               onChange={(e) => setLongitude(e.target.value)}
               placeholder='Enter Longitude'
               className='w-full p-2 mt-1 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500'
+              required
             />
           </div>
         </div>
@@ -530,6 +594,7 @@ const AddAccommodation = () => {
           onChange={(e) => setLocationDescription(e.target.value)}
           placeholder='Describe the location'
           className='w-full p-2 mt-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500'
+          required
         />
       </div>
 
@@ -565,9 +630,10 @@ const AddAccommodation = () => {
               <div className='relative'>
                 <input
                   type='number'
+                  step='0.1'  // Allows decimal input
                   min='0'
                   value={placesNearby[place] || ''}
-                  onChange={(e) => handlePlaceChange(place, e.target.value)}
+                  onChange={(e) => handlePlaceChange(place, parseFloat(e.target.value))}
                   placeholder='0'
                   className='w-24 p-2 pr-8 mt-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500'
                 />
@@ -593,6 +659,7 @@ const AddAccommodation = () => {
               className='p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500'
               value={host}
               onChange={(e) => setHost(e.target.value)}
+              required
             />
           </div>
           
@@ -605,6 +672,7 @@ const AddAccommodation = () => {
               className='p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500'
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
+              required
             />
           </div>
           
@@ -617,6 +685,7 @@ const AddAccommodation = () => {
               className='p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
           
@@ -629,6 +698,7 @@ const AddAccommodation = () => {
               className='p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500'
               value={website}
               onChange={(e) => setWebsite(e.target.value)}
+              required
             />
           </div>
           
@@ -641,6 +711,7 @@ const AddAccommodation = () => {
               className='p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500'
               value={whatsapp}
               onChange={(e) => setWhatsapp(e.target.value)}
+              required
             />
           </div>
         </div>
@@ -655,6 +726,7 @@ const AddAccommodation = () => {
           onChange={(e) => setAdditionalContactInfo(e.target.value)}
           placeholder='Enter additional details'
           className='w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500'
+          required
         />
       </div>
 
@@ -667,6 +739,7 @@ const AddAccommodation = () => {
             <input type='time' id='arrival-from' className='p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500' 
               value={arrivalFrom} // Bind value to state
               onChange={(e) => setArrivalFrom(e.target.value)} // Update state on change
+              required
             />
           </div>
           <div className='flex flex-col'>
@@ -674,6 +747,7 @@ const AddAccommodation = () => {
             <input type='time' id='arrival-to' className='p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500' 
               value={arrivalTo} // Bind value to state
               onChange={(e) => setArrivalTo(e.target.value)}
+              required
             />
           </div>
           <div className='flex flex-col'>
@@ -681,6 +755,7 @@ const AddAccommodation = () => {
             <input type='time' id='departure-from' className='p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500' 
               value={departureFrom} // Bind value to state
               onChange={(e) => setDepartureFrom(e.target.value)}
+              required
             />
           </div>
           <div className='flex flex-col'>
@@ -688,6 +763,7 @@ const AddAccommodation = () => {
             <input type='time' id='departure-to' className='p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500' 
               value={departureTo} // Bind value to state
               onChange={(e) => setDepartureTo(e.target.value)}
+              required
             />
           </div>
         </div>

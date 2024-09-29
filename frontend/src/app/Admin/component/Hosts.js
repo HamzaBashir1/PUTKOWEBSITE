@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import useFetchData from '../../hooks/useFetchData';
 import { Base_URL } from '../../config';
 import { toast } from 'react-toastify';
+import Loading from '../../components/Loader/Loading';
+import Error from '../../components/Error/Error';
 
 const Hosts = () => {
   const [hosts, setHosts] = useState([]);
@@ -42,8 +44,8 @@ const Hosts = () => {
     <div className="p-4">
       <h2 className="text-xl font-bold mb-4">Host List</h2>
 
-      {loading && <p>Loading hosts...</p>}
-      {error && <p>Error loading hosts: {error}</p>}
+      {loading && <Loading/>}
+      {error && <Error message={error}/>}
 
       {!loading && !error && hosts.length === 0 && <p>No hosts found</p>}
 
