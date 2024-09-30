@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import { Base_URL } from "../../config"
 
 const Price = ({ priceDetails }) => {
   console.log("Price Details: ", priceDetails);
@@ -15,11 +14,36 @@ const Price = ({ priceDetails }) => {
   const toggleModal = () => {
     setShowModal(!showModal);
   };
- 
+ //
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await fetch("http://localhost:5000/api/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, message }),
+    });
+    
+    if (response.ok) {
+      alert("Email sent successfully!");
+      setShowModal(false);
+    } else {
+      const data = await response.json();
+      setError(data.error || "Failed to send email");
+    }
+  } catch (err) {
+    setError("An error occurred while sending email");
+  }
+};
+
+
+ //
   // Email sending function
   const sendEmail = async (customMessage) => {
     try {
-      const response = await fetch(`${Base_URL}/send`, {
+      const response = await fetch("http://localhost:5000/api/send", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,12 +62,74 @@ const Price = ({ priceDetails }) => {
       setError("An error occurred while sending email");
     }
   };
+//
+const handleSave = async () => {
+  const userr = localStorage.getItem('user');
+  if (userr) {
+    const users = JSON.parse(userr);
+    const userId = users._id;
+
+    // Helper function to format the date to 'YYYY-MM-DD'
+    const formatDate = (date) => {
+      const d = new Date(date);
+      let month = '' + (d.getMonth() + 1);
+      let day = '' + d.getDate();
+      const year = d.getFullYear();
+
+      if (month.length < 2) month = '0' + month;
+      if (day.length < 2) day = '0' + day;
+
+      return [year, month, day].join('-');
+    };
+
+    // Convert check-in and check-out dates to 'YYYY-MM-DD' format
+    const startDate = formatDate(priceDetails.checkInDate);
+    const endDate = formatDate(priceDetails.checkOutDate);
+
+    // Create the occupancyCalendarEntry object
+    const occupancyCalendarEntry = {
+      startDate: startDate, // Use formatted startDate
+      endDate: endDate,     // Use formatted endDate
+      guestName: priceDetails.name, // Optional guest name
+      status: 'book', // Status can be booked, available, or blocked
+    };
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/accommodation/${priceDetails.accommodationId._id}/occupancyCalendar`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          startDate: startDate, // Directly sending startDate and endDate
+          endDate: endDate,
+          guestName: priceDetails.name,
+          status: 'book', // Send the calendar entry
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Failed to update occupancy calendar: ${errorData.message}`);
+      }
+
+      const result = await response.json();
+      console.log('Successfully updated:', result);
+      alert('Calendar updated successfully!');
+    } catch (error) {
+      console.error('Error updating accommodation:', error);
+      alert('Failed to update accommodation.');
+    }
+  } else {
+    alert('User not found. Please log in.');
+  }
+};
 
   // Function to update the reservation by name and send an email
   const updateReservationByName = async (name, status, emailMessage) => {
     try {
       const response = await fetch(
-        `${Base_URL}/reservation/name/${name}`,
+        `http://localhost:5000/api/reservation/name/${name}`,
         {
           method: "PUT",
           headers: {
@@ -61,7 +147,7 @@ const Price = ({ priceDetails }) => {
 
       const result = await response.json();
       console.log("Updated reservation:", result);
-
+      handleSave(); 
       // Send email after updating the reservation
       sendEmail(emailMessage);
     } catch (error) {
@@ -139,7 +225,8 @@ const Price = ({ priceDetails }) => {
             <div className="space-y-2">
               <div>Date from - to</div>
               <div>
-                {priceDetails.checkInDate} - {priceDetails.checkOutDate}
+              
+              {new Date(priceDetails.checkInDate).toLocaleDateString()} - {new Date(priceDetails.checkOutDate).toLocaleDateString()}
               </div>
               <div>Number of persons</div>
               <div>{priceDetails.numberOfPersons} adults</div>

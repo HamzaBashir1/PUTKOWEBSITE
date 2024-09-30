@@ -1,5 +1,6 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { useRouter } from 'next/navigation';  // Import useRouter for redirect
 import React from 'react';
 import Heading from '../component/Heading';
 import Location from '../component/Location';
@@ -16,20 +17,29 @@ import Persons from '../component/Persons';
 import CommonSection from '../../List-Page/component/CommonSection';
 import WeatherForecast from '../component/WeatherForecast';
 import Accommodation from '../component/Accommodation';
-import Loading from "../../components/Loader/Loading.js"
-import Error from "../../components/Error/Error.js"
-import Footer from "../../components/Footer/Footer.js"
-import { Base_URL } from "../../config"
+import Loading from "../../components/Loader/Loading.js";
+import Error from "../../components/Error/Error.js";
+import Footer from "../../components/Footer/Footer.js";
+import { AuthContext } from '../../context/AuthContext';
 
 const Page = ({ params }) => {
     const [accommodationData, setAccommodationData] = useState();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const { user } = useContext(AuthContext);  // Access user from context
+    const router = useRouter();  // Initialize router
+
     useEffect(() => {
+        if (!user) {
+            // Redirect to login page if user is not logged in
+            router.push('/login');
+            return;  // Prevent further execution if not logged in
+        }
+
         const fetchAccommodationData = async () => {
             try {
-                const response = await fetch(`${Base_URL}/accommodation/${params.details}`);
+                const response = await fetch(`http://localhost:5000/api/accommodation/${params.details}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }
@@ -43,10 +53,14 @@ const Page = ({ params }) => {
         };
 
         fetchAccommodationData();
-    }, [params.details]);
+    }, [params.details, user, router]);
 
     // Logging the fetched data for debugging
     console.log("Accommodation Data:", accommodationData);
+
+    if (!user) {
+        return null; // Render nothing while redirecting
+    }
 
     if (loading) {
         return <Loading />; // Render Loading component
@@ -67,7 +81,7 @@ const Page = ({ params }) => {
                 <Information data={accommodationData} />
                 <Location data={accommodationData} />
                 <Persons data={accommodationData} />
-                {/* <Accommodation data={accommodationData} /> */}
+                <Accommodation data={accommodationData} />
                 <Diet data={accommodationData} />
                 <Overlook data={accommodationData} />
                 <Ratings userId={accommodationData?.userId} 
@@ -79,6 +93,6 @@ const Page = ({ params }) => {
             <Footer/>
         </div>
     );
-}
+};
 
 export default Page;
