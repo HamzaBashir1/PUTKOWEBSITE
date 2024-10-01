@@ -21,6 +21,7 @@ import Loading from "../../components/Loader/Loading.js";
 import Error from "../../components/Error/Error.js";
 import Footer from "../../components/Footer/Footer.js";
 import { AuthContext } from '../../context/AuthContext';
+import { Base_URL } from '../../config';
 
 const Page = ({ params }) => {
     const [accommodationData, setAccommodationData] = useState();
@@ -39,7 +40,7 @@ const Page = ({ params }) => {
 
         const fetchAccommodationData = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/accommodation/${params.details}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/accommodation/${params.details}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }
@@ -81,7 +82,7 @@ const Page = ({ params }) => {
                 <Information data={accommodationData} />
                 <Location data={accommodationData} />
                 <Persons data={accommodationData} />
-                <Accommodation data={accommodationData} />
+                {/* <Accommodation data={accommodationData} /> */}
                 <Diet data={accommodationData} />
                 <Overlook data={accommodationData} />
                 <Ratings userId={accommodationData?.userId} 

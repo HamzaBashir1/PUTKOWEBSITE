@@ -1,15 +1,16 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { BsStarFill, BsWifi } from "react-icons/bs";
 import { GiPoolDive, GiKnifeFork } from "react-icons/gi";
 import { FaParking, FaSmokingBan, FaPaw } from "react-icons/fa";
 import ChatUI from './ChatUI'
 import { toast } from "react-toastify";
 import ReservationPage from "./ReservationPage";
-import { Base_URL } from "../../config"
+import { AuthContext } from "../../context/AuthContext";
 
 const ReservationCard = ({ data }) => {
   const price = data?.price || [];
+  const { user } = useContext(AuthContext);
   const nightlyRate = price;
   const url = data._id;
  const userR = data?.userId._id || "user Name";
@@ -26,7 +27,7 @@ const ReservationCard = ({ data }) => {
   // Fetch reviews based on accommodationId
   const fetchReviews = async () => {
     try {
-      const response = await fetch(`${Base_URL}/reviews/${url}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/reviews/${url}`);
       const result = await response.json();
 
       if (result.success && result.data.length > 0) {
