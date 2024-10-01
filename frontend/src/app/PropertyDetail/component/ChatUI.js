@@ -4,7 +4,7 @@ import { FiSend } from "react-icons/fi";
 import { BsEmojiSmile } from "react-icons/bs";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import { Base_URL } from '../../config';
+import { BASE_URL } from '../../config';
 import { io } from 'socket.io-client';
 
 const ChatUI = ({ userR }) => {
@@ -28,7 +28,7 @@ const ChatUI = ({ userR }) => {
   // Initialize the socket connection and load the senderId from localStorage
   useEffect(() => {
     // Initialize the socket connection only once
-    socket.current = io(`${process.env.NEXT_PUBLIC_BASE_URL}`);
+    socket.current = io(`${BASE_URL}`);
 
     // Load the user from localStorage after component mounts
     const user = localStorage.getItem("user");

@@ -68,7 +68,7 @@ const Ratings = ({ userId, data }) => {
     };
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/reviews/${accommodationId}`, {
+      const response = await fetch(`${Base_URL}/reviews/${accommodationId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

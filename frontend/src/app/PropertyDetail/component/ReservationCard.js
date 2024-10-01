@@ -7,6 +7,7 @@ import ChatUI from './ChatUI'
 import { toast } from "react-toastify";
 import ReservationPage from "./ReservationPage";
 import { AuthContext } from "../../context/AuthContext";
+import { Base_URL } from "../../config"
 
 const ReservationCard = ({ data }) => {
   const price = data?.price || [];
@@ -27,7 +28,7 @@ const ReservationCard = ({ data }) => {
   // Fetch reviews based on accommodationId
   const fetchReviews = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/reviews/${url}`);
+      const response = await fetch(`${Base_URL}/reviews/${url}`);
       const result = await response.json();
 
       if (result.success && result.data.length > 0) {
