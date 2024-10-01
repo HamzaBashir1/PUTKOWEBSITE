@@ -6,7 +6,7 @@ import {
   getAdminById, 
   updateAdmin, 
   deleteAdmin 
-} from '../controllers/AdminController.js';
+} from '../Controllers/AdminController.js';
 
 const router = express.Router();
 
