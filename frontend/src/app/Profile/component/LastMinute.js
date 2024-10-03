@@ -25,20 +25,20 @@ const LastMinute = () => {
     };
 
     return (
-        <div className="p-4 md:p-8 lg:p-10 xl:p-12 min-h-screen">
-            <div className="flex flex-col gap-4 md:flex-row md:justify-between mb-6">
+        <div className="min-h-screen p-4 md:p-8 lg:p-10 xl:p-12">
+            <div className="flex flex-col gap-4 mb-6 md:flex-row md:justify-between">
                 {/* Left Section: Title and Status */}
                 <div className="flex flex-col">
                     <h1 className="text-[#292A34] font-bold text-xl md:text-2xl">News</h1>
                     <p className="text-[#292A34B2] text-sm md:text-xs font-medium">
-                        Apartment Košice - no messages
+                          no messages
                     </p>
                 </div>
 
                 {/* Center Section: Add Accommodation Button */}
-                <div className="hidden md:flex md:flex-row md:items-center gap-4 cursor-pointer" onClick={toggleMenu}>
+                <div className="hidden gap-4 cursor-pointer md:flex md:flex-row md:items-center" onClick={toggleMenu}>
                     <CiSearch className="text-xl text-gray-500" />
-                    <button className="flex items-center bg-white text-black border border-gray-300 px-4 py-2 rounded-lg space-x-2 hover:bg-gray-100">
+                    <button className="flex items-center px-4 py-2 space-x-2 text-black bg-white border border-gray-300 rounded-lg hover:bg-gray-100">
                         <BiPlus className="text-lg" />
                         <span>Add Accommodation</span>
                     </button>
@@ -47,7 +47,7 @@ const LastMinute = () => {
                             <img 
                                 src={user?.photo} 
                                 alt="User Profile" 
-                                className="w-8 h-8 rounded-full object-cover"
+                                className="object-cover w-8 h-8 rounded-full"
                             />
                         ) : (
                             <BsPersonCircle className="text-[#292A34] text-xl" />
@@ -57,21 +57,21 @@ const LastMinute = () => {
                 </div>
             </div>
 
-            <div className="mx-auto max-w-5xl gap-10">
-                <div className="p-5 bg-white mb-10 flex flex-row items-center gap-5">
-                    <h1 className="font-semibold text-lg">1/2</h1>
+            <div className="max-w-5xl gap-10 mx-auto">
+                <div className="flex flex-row items-center gap-5 p-5 mb-10 bg-white">
+                    <h1 className="text-lg font-semibold">1/2</h1>
                     <span>Last minute</span> 
                     <AiOutlineQuestionCircle className="text-gray-500" />
                 </div>
 
                 <textarea
                     rows={4}
-                    className="w-full mb-10 p-3 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"
+                    className="w-full p-3 mb-10 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"
                     placeholder="Enter details..."
                 />
 
-                <div className="p-5 bg-white mb-10 flex flex-row items-center gap-5">
-                    <h1 className="font-semibold text-lg ">2/2  </h1>
+                <div className="flex flex-row items-center gap-5 p-5 mb-10 bg-white">
+                    <h1 className="text-lg font-semibold ">2/2  </h1>
                     <span>When the offer will be displayed on the website</span>
                     <AiOutlineQuestionCircle className="text-gray-500" />
                 </div>

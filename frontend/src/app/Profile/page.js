@@ -105,16 +105,16 @@ const ProfilePage = () => {
                     { icon: <RiMenu2Fill />, text: 'Reservation requests', href: '#', page: 'reservation' },
                     { icon: <MdOutlineEmail />, text: 'News', href: '#', page: 'News' },
                     { icon: <LuCalendarDays />, text: 'Occupancy calendar', href: '#', page: 'Calender' },
-                    // { icon: <MdOutlineShowChart />, text: 'Statistics', href: '#', page: 'Statistics' },
+                    { icon: <MdOutlineShowChart />, text: 'Statistics', href: '#', page: 'Statistics' },
                     { icon: <FaRegStar />, text: 'Rating', href: '#', page: 'Rating' },
                   
                     // { icon: <MdOutlinePercent />, text: 'Promotions and discounts', href: '#' },
                     { icon: <BiTime/>, text: 'Last Minutes', href: '', page:'LastMinute'},
                     { icon: <RiHotelLine />, text: 'Accommodation', href: '#', page: 'AccommodationShow' },
                     { icon: <GoSync />, text: 'Calender synchronization', href: '#', page: 'Synchronization' },
-                    { icon: <MdOutlineSubscriptions />, text: 'Subscription', href: '#', page: 'Subscription' },
-                    { icon: <FaFileInvoice/>, text: 'Invoice', href: '#', page:'Invoice'},
-                    { icon: <BiDotsHorizontalRounded/>, text: 'Additional Services', href: '#', page:'AdditionalServices'},
+                    // { icon: <MdOutlineSubscriptions />, text: 'Subscription', href: '#', page: 'Subscription' },
+                    // { icon: <FaFileInvoice/>, text: 'Invoice', href: '#', page:'Invoice'},
+                    // { icon: <BiDotsHorizontalRounded/>, text: 'Additional Services', href: '#', page:'AdditionalServices'},
                     { icon: <BiPlus/>, text: 'Add Accommodation', href: '#', page:'AddAccommodation'},
                   ].map(({ icon, text, href, page }) => (
                     <li key={text}>
@@ -190,11 +190,11 @@ const ProfilePage = () => {
               {activePage === 'Rating' && (
                   <Rating />
               )}
-              {/* {activePage === 'Statistics' && (
+              {activePage === 'Statistics' && (
                   <Statistics/>
-              )} */}
+              )}
               
-              {activePage === 'Invoice' && (
+              {/* {activePage === 'Invoice' && (
                   <Invoice/>
               )}
               {activePage === 'Subscription' && (
@@ -202,7 +202,7 @@ const ProfilePage = () => {
               )}
               {activePage === 'AdditionalServices' && (
                   <AdditionalServices />
-              )}
+              )} */}
               {activePage === 'LastMinute' && (
                   <LastMinute />
               )}
@@ -249,15 +249,15 @@ const ProfilePage = () => {
                         { title: "Occupancy calendar", Icon: LuCalendarDays, page: "Calender" },
                         { title: "Statistics", Icon: MdOutlineShowChart, page: "Statistics" },
                         { title: "Rating", Icon: FaRegStar, page: "Rating" },
-                        { title: "Prices", Icon: MdEuro, page: "Prices" },
-                        { title: "Promotions and discounts", Icon: MdOutlinePercent, page: "Promotions" },
+                        // { title: "Prices", Icon: MdEuro, page: "Prices" },
+                        // { title: "Promotions and discounts", Icon: MdOutlinePercent, page: "Promotions" },
                         { title: "Last minute", Icon: WiTime10, page: "LastMinute" },
                         { title: "Accommodation", Icon: RiHotelLine, page: "AccommodationShow" },
                         { title: "Synchronization", Icon: GoSync, page: "Synchronization" },
                         { title: "Subscription", Icon: MdOutlineSubscriptions, page: "Subscription" },
-                        { title: "Additional services", Icon: HiOutlineDotsHorizontal, page: "AdditionalServices" },
-                        { title: "Invoices", Icon: LiaFileInvoiceSolid, page: "Invoices" },
-                        { title: "Billing data", Icon: HiMenuAlt2, page: "BillingData" },
+                        // { title: "Additional services", Icon: HiOutlineDotsHorizontal, page: "AdditionalServices" },
+                        // { title: "Invoices", Icon: LiaFileInvoiceSolid, page: "Invoices" },
+                        // { title: "Billing data", Icon: HiMenuAlt2, page: "BillingData" },
                         { title: "Add Accommodation", Icon: BiPlus, page: "AddAccommodation" },
                       ].map(({ title, Icon, page }, index) => (
                         <Card

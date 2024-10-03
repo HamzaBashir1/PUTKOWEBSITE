@@ -99,14 +99,13 @@ const Calendar = ({ year, months }) => {
   return (
     <div className="p-5">
       {/* Navbar */}
-      <div className="mb-6 bg-white rounded-lg shadow-md p-5">
+      <div className="p-5 mb-6 bg-white rounded-lg shadow-md">
         <div className="flex flex-col gap-4 mb-4 md:flex-row md:justify-between">
           <div className="flex flex-col">
             <h1 className="text-[#292A34] font-bold text-xl md:text-2xl">
               Occupancy calendar
             </h1>
             <p className="text-[#292A34B2] text-sm md:text-xs font-medium">
-              Apartment Košice
             </p>
           </div>
           <div

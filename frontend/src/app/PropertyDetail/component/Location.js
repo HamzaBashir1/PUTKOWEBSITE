@@ -2,11 +2,25 @@ import React from 'react';
 import Image from 'next/image';
 import { ImCart, ImPieChart, ImSpoonKnife } from 'react-icons/im';
 import location from '../../../../public/location.png';
+// import { GoogleMap } from '@react-google-maps/api';
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+
+
+const containerStyle = {
+  width: '100%',
+  height: '400px',
+};
 
 const Location = ({ data }) => {
+  const location = data?.location || {};
   const locationDetails = data?.locationDetails || {};
   const contactDetails = data?.contactDetails || {};
   const placeTypes = locationDetails?.placesNearby || []; // Updated to use placesNearby
+
+   // Load the Google Maps script
+   const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY, // Make sure to set this in your environment variables
+  });
 
   const getIcon = (place) => {
     switch (place) {
@@ -31,7 +45,20 @@ const Location = ({ data }) => {
         {locationDetails?.country} / {locationDetails?.city} / {locationDetails?.zipCode}
       </p>
 
-      <Image src={location} alt="Location" className='w-full h-auto mb-4' />
+      {/* <Image src={location} alt="Location" className='w-full h-auto mb-4' /> */}
+
+      {/* Map */}
+      {isLoaded ? (
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={{ lat: location?.latitude, lng: location?.longitude }}
+          zoom={12}
+        >
+          <Marker position={{ lat: location?.latitude, lng: location?.longitude }} />
+        </GoogleMap>
+      ) : (
+        <p>Loading map...</p>
+      )}
 
       <p className='mb-4 text-sm sm:text-base'>
         <span className='font-bold'>{contactDetails?.host}</span>

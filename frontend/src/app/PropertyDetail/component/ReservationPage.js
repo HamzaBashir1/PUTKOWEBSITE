@@ -141,8 +141,8 @@ const send_email = async () => {
   }
 };
 
-const handle_submit = async (e) => {
-  e.preventDefault();
+const handle_submit = async () => {
+  // e.preventDefault();
 
   // if (!reservation.agree_to_terms) {
   //   return alert("Please agree to the terms and conditions.");
@@ -197,6 +197,33 @@ const handle_submit = async (e) => {
   }
 };
 
+    const incrementInterestCount = async (id) => {
+        try {
+            const response = await fetch(`${Base_URL}/accommodation/${accommodationId}/interest`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                console.error("Error incrementing view count:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error incrementing view count:", error);
+        }
+    };
+
+
+    const handleButtonClick = async () => {
+      // Call the function to increment interest count
+      await incrementInterestCount(accommodationId); // Pass the accommodationId here
+    
+      // Then call the handle_submit function
+      await handle_submit();
+    };
+
+    
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="relative w-full h-full max-w-full p-4 overflow-y-auto bg-white rounded-lg lg:h-auto lg:max-h-screen sm:p-8">
@@ -396,7 +423,7 @@ const handle_submit = async (e) => {
                 </label>
               </div>
               <button
-                onClick={handle_submit}
+                onClick={handleButtonClick}
                 className="flex items-center justify-center w-full py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
               >
                 Send reservation <BsArrowRight className="ml-2" />

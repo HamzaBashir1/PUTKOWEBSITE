@@ -4,6 +4,16 @@ import { useState } from 'react';
 import { Base_URL } from "../../config.js";
 import { toast } from 'react-toastify';
 import uploadImageToCloudinary from "../../utlis/uploadCloudinary.js";
+import { useCallback } from 'react';
+import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
+
+
+const containerStyle = {
+  width: '100%',
+  height: '400px',
+};
+
 
 const AddAccommodation = () => {
 
@@ -20,8 +30,8 @@ const AddAccommodation = () => {
   const [zipCode, setZipCode] = useState('');
   const [country, setCountry] = useState('');
   const [address, setAddress] = useState('');
-  const [latitude, setLatitude] = useState('');
-  const [longitude, setLongitude] = useState('');
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
   const [locationDescription, setLocationDescription] = useState('');
   const [placesNearby, setPlacesNearby] = useState({
     Restaurant: '',
@@ -275,6 +285,63 @@ const AddAccommodation = () => {
     setPreviewURLs(previews); // Save preview URLs for display
   };
 
+  // const [address, setAddress] = useState('');
+  // const [latitude, setLatitude] = useState(null);
+  // const [longitude, setLongitude] = useState(null);
+  const [selected, setSelected] = useState(null); // To track the marker position
+  const libraries = ['places'];
+  // Load Google Maps script
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: "AIzaSyBbygVU5BVQoXi0Di1zj0_Dvwby2plxP6Q", // Use environment variable
+    libraries,
+    id: 'google-map-script', // Optional: Unique ID for LoadScript
+  });
+
+  const {
+    value,
+    suggestions: { status, data },
+    setValue,
+  } = usePlacesAutocomplete();
+
+  // Handle selection from autocomplete and set the map and marker location
+  const handleSelect = async (selectedAddress) => {
+    setValue(selectedAddress, false);
+    setAddress(selectedAddress);
+
+    const results = await getGeocode({ address: selectedAddress });
+    const { lat, lng } = await getLatLng(results[0]);
+
+    setLatitude(lat);
+    setLongitude(lng);
+    setSelected({ lat, lng }); // Set marker position
+  };
+
+  // Handle map click to update latitude and longitude
+  const handleMapClick = useCallback((event) => {
+    const lat = event.latLng.lat();
+    const lng = event.latLng.lng();
+
+    setLatitude(lat);
+    setLongitude(lng);
+    setSelected({ lat, lng }); // Set marker position
+  }, []);
+
+  // Handle marker drag to update latitude and longitude
+  const handleMarkerDragEnd = useCallback((event) => {
+    const lat = event.latLng.lat();
+    const lng = event.latLng.lng();
+
+    setLatitude(lat);
+    setLongitude(lng);
+    setSelected({ lat, lng }); // Update marker position
+  }, []);
+
+  // Return early if the Google Maps script is not loaded
+  if (!isLoaded) {
+    return <div>Loading...</div>; // Loading state
+  }
+
+
   const handleSubmit = async (event) => {
     console.log("starting point")
     const userr = localStorage.getItem("user");
@@ -500,7 +567,7 @@ const AddAccommodation = () => {
 
 
       {/* Location Section */}
-      <div className='p-5 mb-4 bg-white'>
+      {/* <div className='p-5 mb-4 bg-white'>
         <h1 className='text-lg font-bold'>Location</h1>
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
           <div>
@@ -536,8 +603,57 @@ const AddAccommodation = () => {
             />
           </div>
         </div>
-      </div>
+      </div> */}
 
+          {/* Location Section */}
+      <div className='p-5 mb-4 bg-white'>
+        <h1 className='text-lg font-bold'>Location</h1>
+        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+          {/* Address Input */}
+          <div>
+            <label className='font-medium'>Address</label>
+            <input
+              value={value || address}
+              onChange={(e) => setValue(e.target.value)} // Handle Google autocomplete or manual input
+              placeholder='Enter Address'
+              className='w-full p-2 mt-1 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500'
+              required
+            />
+            {/* Suggestions from Google Autocomplete */}
+            {status === 'OK' && (
+              <ul className="absolute z-10 bg-white border border-gray-300">
+                {data.map(({ place_id, description }) => (
+                  <li key={place_id} onClick={() => handleSelect(description)} className="p-2 hover:bg-gray-200 cursor-pointer">
+                    {description}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+
+        {/* Google Map */}
+        {isLoaded ? (
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={{ lat: latitude, lng: longitude }}
+            zoom={12}
+            onClick={handleMapClick} // Update on map click
+          >
+            {/* Draggable Marker */}
+            {selected && (
+              <Marker
+                position={selected}
+                draggable={true}
+                onDragEnd={handleMarkerDragEnd} // Update on marker drag
+              />
+            )}
+          </GoogleMap>
+        ) : (
+          <p>Loading map...</p>
+        )}
+        
+      </div>
       {/* Accommodation Address */}
       <div className='p-5 mb-4 bg-white'>
         <h1 className='mb-2 text-lg font-bold'>Accommodation Address:</h1>

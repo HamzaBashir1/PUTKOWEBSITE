@@ -25,7 +25,7 @@ const Reservation = () => {
   const handleProcessClick = (reservation) => {
     setSelectedReservation(reservation); // Set the selected reservation
     setShowPrice(true); // Show the TabNavigation component
-  };
+  }; 
 
   useEffect(() => {
     const userr = localStorage.getItem('user');
@@ -69,7 +69,7 @@ const Reservation = () => {
     return (
       <div className="py-4">
         <button 
-          className="text-gray-600 text-2xl"
+          className="text-2xl text-gray-600"
           onClick={closeForm}
         >
           Close Form

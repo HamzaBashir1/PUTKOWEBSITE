@@ -3,8 +3,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { CiSearch } from 'react-icons/ci';
 import { BiPlus } from 'react-icons/bi';
-import { Base_URL } from "../../config"
-import { BsPersonCircle } from 'react-icons/bs';
 
 function Synchronization() {
   const { user } = useContext(AuthContext);
@@ -25,7 +23,7 @@ function Synchronization() {
       // Fetch accommodation data for the specific user
       const fetchAccommodations = async () => {
         try {
-          const response = await fetch(`${Base_URL}/accommodation/user/${userId}`, {
+          const response = await fetch(`http://localhost:5000/api/accommodation/user/${userId}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -63,7 +61,7 @@ function Synchronization() {
     }
 
     try {
-      const response = await fetch(`${Base_URL}/accommodation/${selectedAccommodation._id}`, {
+      const response = await fetch(`http://localhost:5000/api/accommodation/${selectedAccommodation._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -92,7 +90,6 @@ function Synchronization() {
               Synchron Calendar
             </h1>
             <p className="text-[#292A34B2] text-sm md:text-xs font-medium">
-              Apartment Košice
             </p>
           </div>
           <div
