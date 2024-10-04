@@ -25,15 +25,16 @@ export const FormProvider = ({ children }) => {
   const [tin, setTin] = useState('');
   const [vatNumber, setVatNumber] = useState('');
   const [user, setUser] = useState('');
+  const [person, setperson] = useState('');
   const [location, setLocation] = useState('');
-  // const [city, setcity] = useState('');
+  const [drop, setdrop] = useState('');
   // const [user, setUser] = useState('');
   // Function to update selected plan
   const updateSelectedPlan = (plan) => setSelectedPlan(plan);
   const updateNote = (value) => setNote(value);
   const updateSelectedWeb = (value) => setSelectedWeb(value);
   const updateLocation = (value) => setLocation(value);
-
+const updatedrop = (value) => setdrop(value);
   // Functions to update other state variables
   const updateUser = (value) => setUser(value);
   const updatePhoneNumber = (value) => setPhoneNumber(value);
@@ -48,7 +49,7 @@ export const FormProvider = ({ children }) => {
   const updateIdNumber = (value) => setIdNumber(value);
   const updateTin = (value) => setTin(value);
   const updateVatNumber = (value) => setVatNumber(value);
-
+  const updateperson = (value) => setperson(value);
   // FormData update function
   const updateFormData = (name, value) => {
     setFormData((prevData) => ({
@@ -72,7 +73,12 @@ export const FormProvider = ({ children }) => {
         updateLocation,
         planName,
         updatePlanName,
+        person,
+        updateperson,
         user,
+        drop,
+        updatedrop,
+
         updateUser,
         websiteInformation,
         updateWebsiteInformation,

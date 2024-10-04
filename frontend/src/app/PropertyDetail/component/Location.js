@@ -2,13 +2,13 @@ import React from 'react';
 import Image from 'next/image';
 import { ImCart, ImPieChart, ImSpoonKnife } from 'react-icons/im';
 import location from '../../../../public/location.png';
-// import { GoogleMap } from '@react-google-maps/api';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import Loading from '../../components/Loader/Loading';
 
 
 const containerStyle = {
   width: '100%',
-  height: '400px',
+  height: '500px',
 };
 
 const Location = ({ data }) => {
@@ -29,14 +29,48 @@ const Location = ({ data }) => {
       case 'Supermarket':
         return <ImPieChart />;
       case 'BusStation':
-      case 'TrainStation':
         return <span className='text-xl'>🚍</span>;
+      case 'TrainStation':
+        return <span className='text-xl'>🚉</span>;
       case 'Airport':
         return <span className='text-xl'>✈️</span>;
+      case 'SkiSlope':
+        return <span className='text-xl'>⛷️</span>;
+      case 'AquaPark':
+        return <span className='text-xl'>🏊</span>;
+      case 'TouristTrail':
+        return <span className='text-xl'>🥾</span>;
+      case 'CycleRoute':
+        return <span className='text-xl'>🚴</span>;
+      case 'ATM':
+        return <span className='text-xl'>🏧</span>;
+      case 'GasStation':
+        return <span className='text-xl'>⛽</span>;
+      case 'ChargingStation':
+        return <span className='text-xl'>🔌</span>;
+      case 'CableCar':
+        return <span className='text-xl'>🚠</span>;
+      case 'SwimmingPool':
+        return <span className='text-xl'>🏊‍♂️</span>;
+      case 'WaterArea':
+        return <span className='text-xl'>💧</span>;
+      case 'TheSea':
+        return <span className='text-xl'>🌊</span>;
+      case 'Beach':
+        return <span className='text-xl'>🏖️</span>;
+      case 'Castle':
+        return <span className='text-xl'>🏰</span>;
+      case 'Zoo':
+        return <span className='text-xl'>🦁</span>;
+      case 'Museum':
+        return <span className='text-xl'>🏛️</span>;
+      case 'BusinessCenter':
+        return <span className='text-xl'>🏢</span>;
       default:
         return <span className='text-xl'>❓</span>;
     }
   };
+
 
   return (
     <div className='p-4 sm:p-6 mt-5 bg-white rounded-lg lg:mr-[440px] lg:ml-[18px]'>
@@ -44,8 +78,6 @@ const Location = ({ data }) => {
       <p className='p-2 mb-4 text-sm rounded-md sm:text-base'>
         {locationDetails?.country} / {locationDetails?.city} / {locationDetails?.zipCode}
       </p>
-
-      {/* <Image src={location} alt="Location" className='w-full h-auto mb-4' /> */}
 
       {/* Map */}
       {isLoaded ? (
@@ -57,11 +89,11 @@ const Location = ({ data }) => {
           <Marker position={{ lat: location?.latitude, lng: location?.longitude }} />
         </GoogleMap>
       ) : (
-        <p>Loading map...</p>
+        <Loading/>
       )}
 
       <p className='mb-4 text-sm sm:text-base'>
-        <span className='font-bold'>{contactDetails?.host}</span>
+        <span className='font-bold'>{contactDetails?.host} </span>
         {locationDetails?.locationDescription}
       </p>
 
