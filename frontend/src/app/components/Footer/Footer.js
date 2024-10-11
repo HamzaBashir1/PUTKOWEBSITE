@@ -27,53 +27,53 @@ const socialLinks = [
 
 const quickLink01 = [
   {
-    path: "/",
+    path: "/Blog",
     display: "Blog for customers",
   },
   {
-    path: "/AirCover-for-Hosts",
+    path: "/Booking",
     display: "How selection and booking works",
   },
   {
-    path: "/Hosting-resources",
+    path: "/FAQ",
     display: "Frequently asked question",
   },
   {
-    path: "/Hosting-responsibly",
+    path: "/General-business-conditions",
     display: "General business conditions",
   },
 ];
 
 const quickLink02 = [
   {
-    path: "/find-a-doctor",
+    path: "/Blog",
     display: "Blog for accommodation providers",
   },
   {
-    path: "/",
+    path: "/BUY",
     display: "Rent accommodation with putko",
   },
   {
-    path: "/",
+    path: "/FAQ",
     display: "Frequently asked question",
   },
   {
-    path: "/",
+    path: "/Accommodation-general-business-condition",
     display: "General business conditions",
   },
 ];
 
 const quickLink03 = [
   {
-    path: "/help",
+    path: "#",
     display: "Mon - Fri from 9:00 - 17:00",
   },
   {
-    path: "/aircover",
+    path: "tel:+4212122200212",
     display: "+421 21222 002 12",
   },
   {
-    path: "/anti-discrimination",
+    path: "mailto:info@putko.com",
     display: "info@putko.com",
   },
 ];
@@ -152,7 +152,7 @@ const Footer = () => {
                 key={index}
                 target="_blank"
                 rel="noopener noreferrer"
-                className='w-8 h-8 border border-solid border-[#181A1E] rounded-full flex items-center justify-center group hover:bg-primaryColor hover:border-none'
+                className='w-8 h-8 border border-solid border-[#181A1E] rounded-full flex items-center justify-center group hover:bg-[#4FBE9F] hover:border-none'
               >
                 {link.icon}
               </a>

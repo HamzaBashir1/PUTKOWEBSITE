@@ -19,11 +19,16 @@ import reviewRoutes from './Routes/ReviewRoutes.js'
 import EmailRoutes from './Routes/EmailRoutes.js'
 import ReservationRoutes from "./Routes/ReservationRoutes.js"
 import FavoriteRoutes from "./Routes/FavoriteRoutes.js"
+import BlogRoutes from "./Routes/BlogRoutes.js"
+import bodyParser from 'body-parser';
 
 dotenv.config();
 
 const app = express();
 const Port = process.env.Port || 8000;
+
+app.use(bodyParser.json({ limit: '10mb' })); // Adjust the limit as necessary
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 // Create the HTTP server
 const server = http.createServer(app);
@@ -74,6 +79,7 @@ app.use("/api/reviews", reviewRoutes);
 app.use("/api/subscribe", EmailRoutes);
 app.use("/api/reservation", ReservationRoutes);
 app.use("/api/favorite", FavoriteRoutes);
+app.use("/api/blog", BlogRoutes);
 
 // Socket.IO connection
 io.on('connection', (socket) => {
@@ -86,6 +92,7 @@ io.on('connection', (socket) => {
       const newMessage = new Message({
         message: msg.message,
         sender: msg.sender,
+        reciver:msg.reciver,
         users: msg.users,
       });
       // await newMessage.save();

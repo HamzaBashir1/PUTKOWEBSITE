@@ -4,7 +4,7 @@ import React from "react";
 const CategoryBox = ({ icon: Icon, label, selected, onClick }) => {
   return (
     <div
-      onClick={onClick}  // Handle onClick
+      onClick={onClick}
       className={`flex flex-col items-center justify-center gap-2
       p-3
       border-b-2 hover:text-neutral-800

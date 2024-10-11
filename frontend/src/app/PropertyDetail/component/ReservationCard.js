@@ -8,10 +8,11 @@ import { toast } from "react-toastify";
 import ReservationPage from "./ReservationPage";
 import { AuthContext } from "../../context/AuthContext";
 import { Base_URL } from "../../config"
+import LoginPopup from "./login"; 
 
 const ReservationCard = ({ data }) => {
   const price = data?.price || [];
-  const { user } = useContext(AuthContext);
+  const { user, login } = useContext(AuthContext); // Add login method to context
   const nightlyRate = price;
   const url = data._id;
  const userR = data?.userId._id || "user Name";
@@ -23,8 +24,10 @@ const ReservationCard = ({ data }) => {
   const [reserved, setReserved] = useState(false);
   const [total, setTotal] = useState(0);
   const [showPopup, setShowPopup] = useState(false);
-  const [showReservationPage, setShowReservationPage] = useState(false); // New state for showing ReservationPage
-  const [ratingsData, setRatingsData] = useState({}); // State to store ratings
+  const [showReservationPage, setShowReservationPage] = useState(false);
+  const [ratingsData, setRatingsData] = useState({});
+  const [showLoginPopup, setShowLoginPopup] = useState(false);  // State to show login popup
+  const [pendingAction, setPendingAction] = useState(null);  // State to remember which action to continue after login
   // Fetch reviews based on accommodationId
   const fetchReviews = async () => {
     try {
@@ -78,23 +81,47 @@ const ReservationCard = ({ data }) => {
   }, [nights]);
 
   const handleReserve = () => {
+    if (!user) {
+      // If user is not logged in, show login popup first
+      setPendingAction("reserve");
+      setShowLoginPopup(true);
+      return;
+    }
+
     if (checkInDate && checkOutDate && guests > 0) {
       setReserved(true);
-      setShowReservationPage(true); // Show ReservationPage
+      setShowReservationPage(true);  // Show ReservationPage
     } else {
       toast("Please select valid check-in and check-out dates and number of guests.");
     }
   };
 
   const togglePopup = () => {
+    if (!user) {
+      // If user is not logged in, show login popup first
+      setPendingAction("message");
+      setShowLoginPopup(true);
+      return;
+    }
     setShowPopup(!showPopup);
+  };
+
+  // Function to handle login and continue the pending action
+  const handleLoginSuccess = () => {
+    setShowLoginPopup(false);  // Close login popup
+    if (pendingAction === "reserve") {
+      handleReserve();  // Continue reservation process
+    } else if (pendingAction === "message") {
+      togglePopup();  // Continue message process
+    }
+    setPendingAction(null);  // Clear pending action
   };
 
   return (
     <div className="bg-[#f8f8f8]">
-      <div className="flex flex-col p-4 lg:flex-row lg:space-x-8">
+      <div className="flex flex-col lg:p-4 lg:flex-row lg:space-x-8">
         <div className="flex-1">
-          <div className="flex flex-col p-4 bg-white rounded-lg sm:p-8 lg:flex-row lg:space-x-8">
+          <div className="flex flex-col p-4 bg-white lg:rounded-lg sm:p-8 lg:flex-row lg:space-x-8">
             {/* Features and Evaluation Section */}
             <div className="flex-1 mb-8 lg:mb-0">
               <div className="flex flex-col justify-between mb-8 space-y-6 md:flex-row md:space-y-0">
@@ -127,7 +154,7 @@ const ReservationCard = ({ data }) => {
           </div>
         </div>
         {/* Reservation and Pricing Section */}
-        <div className="p-5 bg-white rounded-lg">
+        <div className="md:p-5 lg:p-5 xl:p-5 2xl:p-5 bg-white mx-3 p-2 border rounded-lg mt-1">
           <div className="flex justify-between mx-5 mb-4 sm:flex-row">
             <h1 className="text-xl font-bold sm:text-2xl">${price} /<span className="text-sm">night</span></h1>
             <p className="text-xl font-bold sm:text-2xl">5.0</p>
@@ -250,6 +277,15 @@ const ReservationCard = ({ data }) => {
           data={data}
         />
       )}
+
+       {/* Show Login Modal */}
+        {showLoginPopup && (
+          <LoginPopup
+            onLoginSuccess={handleLoginSuccess}  // Pass handleLoginSuccess to login popup
+            onClose={() => setShowLoginPopup(false)}  // Allow closing the popup
+          />
+        )}
+
     </div>
   );
 };
